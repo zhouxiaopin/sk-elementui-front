@@ -1,0 +1,23 @@
+{
+  "id": "1561765",
+  "name": "sk-element",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "模板",
+  "glyphs": [
+    {
+      "icon_id": "9337475",
+      "name": "右切换",
+      "font_class": "youqiehuan",
+      "unicode": "e791",
+      "unicode_decimal": 59281
+    },
+    {
+      "icon_id": "9337476",
+      "name": "左切换",
+      "font_class": "zuoqiehuan",
+      "unicode": "e792",
+      "unicode_decimal": 59282
+    }
+  ]
+}
