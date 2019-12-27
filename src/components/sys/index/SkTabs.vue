@@ -8,10 +8,9 @@
                     :label="item.title"
                     :name="item.name"
                     :closable="item.close"
-                    class="whp-100"
             >
-                <iframe src="https://element.eleme.cn/2.0/#/zh-CN/component/tabs" scrolling="auto" frameborder="0" class="frame">
-                </iframe>
+                <router-view></router-view>
+<!--                <sk-iframe></sk-iframe>-->
             </el-tab-pane>
         </el-tabs>
     </el-main>
@@ -19,13 +18,18 @@
 
 <script>
     import { mapState } from 'vuex'
+    // import SkIframe from './SkIframe'
     export default {
         name: "SkTabs",
+        components:{
+            // SkIframe
+        },
         data(){
             return{
 
             }
         },
+
         methods:{
             removeTab(targetName) {
                 let tabs = this.tabsData;
@@ -70,13 +74,26 @@
 
 <style lang="scss" scoped>
     .SkTabs {
-        background-color: #F0F2F5;
+        /*background-color: #F0F2F5;*/
         color: #333;
-        flex: 1;
+        /*flex: 1;*/
+        height: 500px;
         padding: 0;
+        .el-tabs__header{
+            margin: 0;
+        }
+        .el-tab-pane{
+            &>.div{
+            }
+        }
     }
-    .frame {
-        width: 100%;
-        height: 100%;
+</style>
+
+<!--修改组件默认样式-->
+<style lang="scss">
+    .SkTabs {
+        .el-tabs__header{
+            margin: 0;
+        }
     }
 </style>

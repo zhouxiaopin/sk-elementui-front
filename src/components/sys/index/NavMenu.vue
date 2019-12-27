@@ -8,6 +8,7 @@
         <!-- 导航菜单 -->
         <transition name='fade'>
             <el-menu :default-active="curMenuActive" class="el-menu-vertical" @open="handleOpen" @close="handleClose"
+                     background-color="transparent" :active-text-color="themeColor"
                      @select="selectMenu" :collapse="isCollapse" :collapse-transition="false">
                 <!--            <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">-->
                 <span v-for="(item,index) in menuData" :key="index">
@@ -129,6 +130,7 @@
         overflow: hidden;
         color: #333;
         width: 200px !important;
+        /*background-color: #EEEEEE;*/
         /*logo区域开始*/
         .logo {
             height: 60px;

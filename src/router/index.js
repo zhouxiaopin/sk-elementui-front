@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/views/Index'
 import Login from '@/views/Login'
+import SysUser from '@/views/sysManage/SysUser'
 
 Vue.use(Router);
 
@@ -21,9 +22,19 @@ const router = new Router({
             component:Index,
             meta:{
                 title: 'SK后台管理系统'
-            }
-        }
+            },
+            children: [
+                {
+                    path:'/sysManage/sysUser',
+                    name:'SysUser',
+                    component:SysUser,
+                    // meta:{
+                    //     title: 'SK后台管理系统'
+                    // }
+                }
 
+            ]
+        }
     ]
 });
 router.beforeEach((to, from, next) => {
