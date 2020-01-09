@@ -2,7 +2,8 @@
     <div class="SysUser view-area">
         <!--搜索区域-->
         <div>
-            <el-form ref="searchForm" :model="searchFormModel" label-width="auto" :inline="true" size="small">
+            <el-form ref="searchForm" :model="searchFormModel"  :inline="true" size="small">
+<!--            <el-form ref="searchForm" :model="searchFormModel" label-width="auto" :inline="true" size="small">-->
                 <el-form-item label="用户名">
                     <el-input v-model="searchFormModel.userName"></el-input>
                 </el-form-item>
@@ -27,6 +28,10 @@
         <!--表格-->
         <el-table
                 ref="multipleTable"
+                v-loading="loading"
+                element-loading-text="拼命加载中"
+                element-loading-spinner="el-icon-loading"
+                element-loading-background="rgba(0, 0, 0, 0.6)"
                 :data="tableData3"
                 tooltip-effect="dark"
                 :border="true"
@@ -155,6 +160,8 @@
                     name: '',
                     region: '',
                 },
+                // loading:true
+                loading:false
             }
         },
         methods: {
@@ -175,7 +182,7 @@
                 // });
             },
             add(){
-
+                this.dialogFormVisible = true
             },
             handleSizeChange(val) {
                 window.console.log(`每页 ${val} 条`);

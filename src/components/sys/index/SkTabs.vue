@@ -9,7 +9,13 @@
                     :name="item.name"
                     :closable="item.close"
             >
-                <router-view></router-view>
+                <transition>
+                    <keep-alive>
+                        <router-view></router-view>
+<!--                                        <router-view :name="item.routeComponent"></router-view>-->
+                    </keep-alive>
+                </transition>
+<!--                <router-view :name="item.routeComponent"></router-view>-->
 <!--                <sk-iframe></sk-iframe>-->
             </el-tab-pane>
         </el-tabs>
@@ -47,10 +53,17 @@
 
                 this.$store.commit('setTabsValue',activeName);
                 this.$store.commit('removeTab',targetName);
+                this.$router.replace(activeName).catch(err => {err});
             },
             clickTab(e) {
                 let name = e._props.name;
+                // window.console.log(this.tabsValue);
+                // window.console.log(name);
+                // if (this.tabsValue!= name) {
+                //     this.$router.replace(name)
+                // }
                 this.$store.commit('setCurMenuActiveId',name);
+
                 window.console.log(name);
             }
         },
@@ -60,8 +73,12 @@
                     return this.$store.state.tabs.tabsValue
                 },
                 set(v) {
+                    let old = this.tabsValue;
                     // 使用vuex中的mutations中定义好的方法来改变
                     this.$store.commit('setTabsValue', v)
+                    if (old!= v) {
+                        this.$router.replace(v).catch(err => {err});
+                    }
                 }
             },
             ...mapState({

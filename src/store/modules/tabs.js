@@ -1,20 +1,24 @@
+import log from '@/utils/log'
 export default {
     /*
     * 状态对象
     * 调用{{this.$store.state.userName}}
     * */
     state:{
-        tabsValue: '1',
-        tabsData: [{
-            title: '首页',
-            name: '1',
-            content: 'Tab 1 content',
-
-        }, {
-            title: '用户管理',
-            name: '2',
-            content: 'Tab 2 content'
-        }],
+        tabsValue: '/',
+        tabsData: [
+        //     {
+        //     title: '首页',
+        //     name: '1',
+        //     content: 'Tab 1 content',
+        //
+        // }, {
+        //     title: '用户管理',
+        //     name: '2',
+        //     content: 'Tab 2 content'
+        // }
+            {"title":"首页","name":"/","routeComponent":"Home","content":"New Tab content","close":false}
+        ],
         // tabIndex: 2,
     },
     getters: {
@@ -30,7 +34,7 @@ export default {
     mutations:{
         addTab(state,item){  // 添加tab
             state.tabsData.push(item)
-            window.console.log(JSON.stringify(state.tabsData));
+            log.debug('添加新的tab：'+JSON.stringify(state.tabsData));
 
             // let newTabName = ++this.tabIndex + '';
             // this.editableTabs.push({
@@ -43,7 +47,7 @@ export default {
         removeTab(state,targetName){  // 删除tab
             state.tabsData =  state.tabsData.filter(tab => tab.name !== targetName);
             // state.tabIndex--;
-            window.console.log(JSON.stringify(state.tabsData));
+            // log.debug('最新的tab：'+JSON.stringify(state.tabsData));
         },
         setTabsValue(state,value){  // 设置TabsValue
             state.tabsValue = value

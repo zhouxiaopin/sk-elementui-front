@@ -1,5 +1,5 @@
 <template>
-<!--    <el-aside class="NavMenu">-->
+    <!--    <el-aside class="NavMenu">-->
     <el-aside class="NavMenu" :class="isCollapse?'menu-bar-collapse-width':'menu-bar-width'">
         <!-- logo -->
         <div class="logo font-white" :style="{'background-color':themeColor}">
@@ -7,39 +7,41 @@
         </div>
         <!-- 导航菜单 -->
         <transition name='fade'>
-            <el-menu :default-active="curMenuActive" class="el-menu-vertical" @open="handleOpen" @close="handleClose"
+            <!--            <el-menu :default-active="curMenuActive" class="el-menu-vertical" @open="handleOpen" @close="handleClose"-->
+            <el-menu :default-active="this.$route.path" class="el-menu-vertical sysMenu scrollbar"
                      :active-text-color="themeColor"
                      @select="selectMenu" :collapse="isCollapse" :collapse-transition="false">
                 <!--            <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">-->
-                <span v-for="(item,index) in menuData" :key="index">
-                        <el-menu-item v-if="!item.child||item.child.length<1" :index="item.id">
+                <span v-for="(item,index) in treeSysMenu" :key="index">
+<!--                        <el-menu-item v-if="!item.child||item.child.length<1" :index="item.id" route="{name:'home'}">-->
+                        <el-menu-item v-if="!item.children||item.children.length<1" :index="item.attrs.routePath">
                             <i v-if="item.leftIcon" :class="item.leftIcon"></i>
-                            <span slot="title">{{item.menuName}}</span>
+                            <span slot="title">{{item.name}}</span>
                         </el-menu-item>
-                        <el-submenu v-else :index="item.id">
+                        <el-submenu v-else :index="item.attrs.routePath">
                             <template slot="title">
                                 <i v-if="item.leftIcon" :class="item.leftIcon"></i>
-                                <span slot="title">{{item.menuName}}</span>
+                                <span slot="title">{{item.name}}</span>
                             </template>
-                            <span v-for="(item2,index2) in item.child" :key="index2">
-                                <el-menu-item v-if="!item2.child||item2.child.length<1" :index="item2.id">
-                                    <i v-if="item2.leftIcon" :class="item2.leftIcon"></i>
-                                    <span slot="title">{{item2.menuName}}</span>
+                            <span v-for="(item2,index2) in item.children" :key="index2">
+                                <el-menu-item v-if="!item2.children||item2.children.length<1" :index="item2.attrs.routePath">
+                                    <i v-if="item2.attrs.leftIcon" :class="item2.attrs.leftIcon"></i>
+                                    <span slot="title">{{item2.name}}</span>
                                 </el-menu-item>
-                                <el-submenu v-else :index="item2.id">
+                                <el-submenu v-else :index="item2.attrs.routePath">
                                     <template slot="title">
-                                        <i v-if="item2.leftIcon"  :class="item2.leftIcon"></i>
-                                        <span slot="title">{{item2.menuName}}</span>
+                                        <i v-if="item2.attrs.leftIcon"  :class="item2.attrs.leftIcon"></i>
+                                        <span slot="title">{{item2.name}}</span>
                                     </template>
-                                    <span v-for="(item3,index3) in item2.child" :key="index3">
-                                        <el-menu-item v-if="!item3.child||item3.child.length<1" :index="item3.id">
-                                            <i v-if="item3.leftIcon"  :class="item3.leftIcon"></i>
-                                            <span slot="title">{{item3.menuName}}</span>
+                                    <span v-for="(item3,index3) in item2.children" :key="index3">
+                                        <el-menu-item v-if="!item3.children||item3.children.length<1" :index="item3.attrs.routePath">
+                                            <i v-if="item3.attrs.leftIcon"  :class="item3.attrs.leftIcon"></i>
+                                            <span slot="title">{{item3.name}}</span>
                                         </el-menu-item>
-                                        <el-submenu v-else :index="item3.id">
+                                        <el-submenu v-else :index="item3.attrs.routePath">
                                             <template slot="title">
-                                                <i v-if="item3.leftIcon" :class="item3.leftIcon"></i>
-                                                <span slot="title">{{item3.menuName}}</span>
+                                                <i v-if="item3.attrs.leftIcon" :class="item3.leftIcon"></i>
+                                                <span slot="title">{{item3.name}}</span>
                                             </template>
 
                                         </el-submenu>
@@ -59,31 +61,13 @@
         name: "NavMenu",
         data() {
             return {
-                menuData: [{id: '1', menuName: '首页', url: '', parentId: null, leftIcon: 'el-icon-location', child: []},
-                    {
-                        id: '2', menuName: '用户管理', url: '', parentId: null, leftIcon: 'el-icon-setting'
-                        , child: [{
-                            id: '3', menuName: '选项1', url: '', parentId: '2', leftIcon: ''
-                            , child: []
-                        }]
-                    }],
-                menuData2: [{id: '1', menuName: '首页', url: '', parentId: null, leftIcon: 'el-icon-location', child: []},
-                    {
-                        id: '2', menuName: '用户管理', url: '', parentId: null, leftIcon: 'el-icon-setting'
-                        , child: [],close:'closable'
-                    },{
-                        id: '3', menuName: '选项1', url: '', parentId: '2', leftIcon: ''
-                        , child: [],close:'closable'
-                    }],
             }
         },
+        mounted: function () {
+            this.requestMenu();
+            // this.selectMenu(this.menuData2.find( item=> item.menuName=='首页').routePath);
+        },
         methods: {
-            handleOpen(key, keyPath) {
-                window.console.log(key, keyPath);
-            },
-            handleClose(key, keyPath) {
-                window.console.log(key, keyPath);
-            },
             // 折叠导航栏
             onCollapse() {
                 // this.isCollapse = !this.isCollapse;
@@ -91,24 +75,59 @@
             },
             // index: 选中菜单项的 index, indexPath: 选中菜单项的 index path
             selectMenu(index, indexPath) {
-                window.console.log(index, indexPath);
+                this.log.debug('index:'+index+',indexPath:'+indexPath);
                 let hasMenu = this.tabsData.find( item=> item.name==index);
                 if (hasMenu){
                     this.$store.commit('setTabsValue',hasMenu.name);
-                    window.console.log(this.tabsData);
+                    if (this.$route.path != hasMenu.name){
+                        this.$router.replace(hasMenu.name).catch(err => {err});
+                    }
                     return;
                 }
-                let curMenu = this.menuData2.find( item=> item.id==index);
-                let menuId = curMenu.id;
-                let newTabName = menuId + '';
+                this.$router.replace(index).catch(err => {err});
+                let curMenu = this.sysMenu.find( item=> item.routePath==index);
+                // let menuId = curMenu.routePath;
                 this.$store.commit('addTab',{
-                    title: curMenu.menuName,
-                    name: newTabName,
+                    title: curMenu.rName,
+                    name: curMenu.routePath,
+                    routeComponent: curMenu.routeComponent,
                     content: 'New Tab content',
-                    close:curMenu.close
+                    close:curMenu.close?false:true
                 });
-                this.$store.commit('setTabsValue',newTabName);
+                this.$store.commit('setTabsValue',curMenu.routePath);
             },
+            requestMenu(){
+                this.$api.sysResource.querySysMenu().then((res) => {
+                    // this.log.debug(JSON.stringify(res.data.sysMenu));
+                    if(res.code === 0) {
+                        let sysMenu = res.data.sysMenu;
+                        let treeSysMenu = res.data.treeSysMenu[0].children;
+                        // let treeSysMenu = res.data.treeSysMenu[0].children;
+                        let homeItem = {"routePath":"/","routeComponent":'Home',"routeName":'Home',
+                            "rType":"01","rLevel":2,"rName":"首页","leftIcon":"","rId":-1,"rSort":null,"parentId":null,"close":true};
+                        let treeHomeItem =  {"id":"-1","name":"首页","parentId":null,"order":null,
+                            "level":0,"attrs":{"routePath":'/',"routeComponent":'Home',"leftIcon":null,"close":true,
+                                "routeName":'Home'},"children":null};
+                        sysMenu.unshift(homeItem);
+                        treeSysMenu.unshift(treeHomeItem);
+                        // this.log.debug(JSON.stringify(treeSysMenu));
+                        this.$store.commit('setSysMenu',sysMenu);
+                        this.$store.commit('setTreeSysMenu',treeSysMenu);
+
+                    } else {
+                        this.$message({
+                            message: res.msg,
+                            type: 'info'
+                        })
+                    }
+                    // this.loading = false
+                }).catch((res) => {
+                    this.$message({
+                        message: res.message,
+                        type: 'error'
+                    })
+                });
+            }
         },
         computed:{
             ...mapState({
@@ -116,6 +135,8 @@
                 themeColor: state=>state.app.themeColor,
                 isCollapse: state=>state.app.isCollapse,
                 curMenuActive: state=>state.navMenu.curMenuActive,
+                treeSysMenu: state=>state.navMenu.treeSysMenu,
+                sysMenu: state=>state.navMenu.sysMenu,
                 // tabIndex: state=>state.tabs.tabIndex,
                 // tabsValue: state=>state.tabs.tabsValue,
                 tabsData: state=>state.tabs.tabsData,
@@ -130,12 +151,10 @@
         overflow: hidden;
         color: #333;
         width: 200px !important;
-        /*background-color: #EEEEEE;*/
         /*logo区域开始*/
         .logo {
             height: 60px;
             width: 100%;
-            /*background-color: #1890FF;*/
             display: flex;
             align-items: center;
             padding-left: 18px;
@@ -173,6 +192,10 @@
 
         .el-menu {
             padding-top: 5px;
+            height: 90%;
+            &.sysMenu{
+                overflow-y: scroll;
+            }
             .el-menu-item {
                 &.is-active {
                     border-right: 3px solid;

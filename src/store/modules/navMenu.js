@@ -5,6 +5,8 @@ export default {
     * */
     state:{
         curMenuActive:'1',
+        sysMenu:null,
+        treeSysMenu:null
     },
     getters: {
         // collapse(state){// 对应着上面state
@@ -19,6 +21,12 @@ export default {
     mutations:{
         setCurMenuActiveId(state,id){  // 设置当前激活的目录
             state.curMenuActive = id
+        },
+        setTreeSysMenu(state,data){
+            state.treeSysMenu = data
+        },
+        setSysMenu(state,data){
+            state.sysMenu = data
         },
     },
     /*

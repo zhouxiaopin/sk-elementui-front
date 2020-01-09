@@ -28,66 +28,83 @@
 
 <script>
     import {drawPic} from '@/utils/verifCode'
+    import Cookies from "js-cookie";
     export default {
         name: "Login",
         data() {
-            let checkUserName = (rule, value, callback) => {
-                if (!value) {
-                    return callback(new Error('请输入用户名'));
-                }
-                callback();
-            };
-            let validatePassword= (rule, value, callback) => {
+            let validateUserName = (rule, value, callback) => {
                 if (value === '') {
-                    return callback(new Error('请输入密码'));
+                    callback(new Error('请输入用户名'));
+                } else {
+                    callback();
                 }
-                callback();
             };
-            let validateverifCode= (rule, value, callback) => {
+            let validatePsw = (rule, value, callback) => {
                 if (value === '') {
-                    return callback(new Error('请输入验证码'));
+                    callback(new Error('请输入密码'));
+                } else {
+                    callback();
                 }
-                callback();
+            };
+            let validateVerify = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入验证码'));
+                } else {
+                    callback();
+                }
             };
             return {
+                //当前验证码
                 curVerifCode:'',
+                //登录表单
                 loginForm: {
                     userName: '',
                     password: '',
                     verifCode: '',
                 },
+                //登录校验规则
                 loginRules: {
                     userName: [
-                        { validator: checkUserName, trigger: 'blur' }
+                        { validator: validateUserName, trigger: 'blur' }
                     ],
                     password: [
-                        { validator: validatePassword, trigger: 'blur' }
+                        { validator: validatePsw, trigger: 'blur' }
                     ],
                     verifCode: [
-                        { validator: validateverifCode, trigger: 'blur' }
-                    ],
+                        { validator: validateVerify, trigger: 'blur' }
+                    ]
+
                 }
             };
         },
         mounted: function () {
             //画验证码
-            this.curVerifCode = drawPic(this.$refs['verifCodeCanvas']);
+            this.changeVerifCode();
         },
         methods: {
-            changeVerifCode(){
+            //点击改变验证码
+            changeVerifCode() {
                 //画验证码
                 this.curVerifCode = drawPic(this.$refs['verifCodeCanvas']);
             },
+            //参数校验
+            validateParam() {
+                if (this.loginForm.verifCode !== this.curVerifCode) {
+                    this.$message.error('验证码错误');
+                    this.changeVerifCode();
+                    return false;
+                }
+                return true;
+            },
+            //表单提交
             submitForm(formName) {
                 this.$refs[formName].validate(valid => {
                     if (valid) {
-                    if (this.loginForm.verifCode !== this.curVerifCode) {
-                            this.$message.error('验证码错误');
-                            return;
+                        if (this.validateParam()) {
+                            this.requestLogin();
                         }
-                        window.console.log(JSON.stringify(this.loginForm));
                     } else {
-                        window.console.log('error submit!!');
+                        this.log.info('表单提交失败');
                         return false;
                     }
                 });
@@ -95,6 +112,37 @@
             //重置表单
             resetForm(formName) {
                 this.$refs[formName].resetFields();
+            },
+            //请求登录
+            requestLogin() {
+                const loading = this.$loading({
+                    lock: true,
+                    text: 'Loading',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                });
+                this.$api.login.login(this.loginForm).then((res) => {
+                    this.log.debug(res.data)
+                    if (res.code !== 0) {
+                        this.$message({
+                            message: res.msg,
+                            type: 'error'
+                        })
+                    } else {
+                        Cookies.set('X-Access-Token', res.data);// 放置token到Cookie
+                        sessionStorage.setItem('userName', this.loginForm.userName);// 保存用户到本地会话
+                        // this.$store.commit('menuRouteLoaded', false) // 要求重新加载导航菜单
+                        this.$router.replace('/').catch(err => {err})  // 登录成功，跳转到主页
+                    }
+                    // this.loading = false
+                }).catch((res) => {
+                    this.$message({
+                        message: res.message,
+                        type: 'error'
+                    })
+                });
+                // this.changeVerifCode();
+                loading.close();
             }
         }
     }
