@@ -2,20 +2,14 @@
     <div class="SysUser view-area">
         <!--搜索区域-->
         <div>
-            <el-form ref="searchForm" :model="searchFormModel"  :inline="true" size="small">
+            <el-form ref="searchForm" :model="queryCondition.cdtCustom"  :inline="true" size="small">
 <!--            <el-form ref="searchForm" :model="searchFormModel" label-width="auto" :inline="true" size="small">-->
                 <el-form-item label="用户名">
-                    <el-input v-model="searchFormModel.userName"></el-input>
-                </el-form-item>
-                <el-form-item label="用户名">
-                    <el-input v-model="searchFormModel.userName"></el-input>
-                </el-form-item>
-                <el-form-item label="用户名">
-                    <el-input v-model="searchFormModel.userName"></el-input>
+                    <el-input v-model="queryCondition.cdtCustom.userName"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" icon="el-icon-search" @click="onSearchSubmit">搜索</el-button>
-                    <el-button type="success" icon="el-icon-refresh" @click="onSearchSubmit">刷新</el-button>
+                    <el-button type="success" icon="el-icon-refresh" @click="onRefresh">刷新</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -32,7 +26,7 @@
                 element-loading-text="拼命加载中"
                 element-loading-spinner="el-icon-loading"
                 element-loading-background="rgba(0, 0, 0, 0.6)"
-                :data="tableData3"
+                :data="tableData"
                 tooltip-effect="dark"
                 :border="true"
                 class="wp-100">
@@ -41,28 +35,30 @@
                     width="55">
             </el-table-column>
             <el-table-column
-                    label="日期">
-                <template slot-scope="scope">{{ scope.row.date }}</template>
+                    prop="userName"
+                    label="用户名">
+                <!--<template slot-scope="scope">{{ scope.row.date }}</template>-->
             </el-table-column>
             <el-table-column
-                    prop="name"
-                    label="姓名">
+                    prop="sex"
+                    label="性别">
             </el-table-column>
             <el-table-column
-                    prop="name"
-                    label="姓名">
+                    prop="mobilePhone"
+                    label="手机">
             </el-table-column>
             <el-table-column
-                    prop="name"
-                    label="姓名">
+                    prop="email"
+                    label="邮箱">
             </el-table-column>
             <el-table-column
-                    prop="name"
-                    label="姓名">
+                    prop="createTime"
+                    :formatter="dateFormat"
+                    label="创建时间">
             </el-table-column>
             <el-table-column
-                    prop="address"
-                    label="地址"
+                    prop="recordStatus"
+                    label="状态"
             show-overflow-tooltip>
             </el-table-column>
             <el-table-column
@@ -80,11 +76,11 @@
             <el-pagination
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
-                    :current-page="currentPage4"
-                    :page-sizes="[100, 200, 300, 400]"
-                    :page-size="100"
+                    :current-page="pageInfo.pageNum"
+                    :page-sizes="[10,100, 200, 300]"
+                    :page-size="pageInfo.pageSize"
                     layout="total, prev, pager, next, jumper, sizes"
-                    :total="800">
+                    :total="pageInfo.total">
             </el-pagination>
         </div>
         <!--添加框-->
@@ -113,47 +109,13 @@
         name: "SysUser",
         data(){
             return{
-                searchFormModel:{
-                    userName:''
+                queryCondition:{
+                    start:0,//当前第几页
+                    length:1,//页面显示数量
+                    cdtCustom:{userName:null}
                 },
-                tableData3: [{
-                    date: '2016-05-03',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
-                }, {
-                    date: '2016-05-02',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
-                }, {
-                    date: '2016-05-04',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
-                }, {
-                    date: '2016-05-01',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
-                }, {
-                    date: '2016-05-08',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
-                },
-                    {
-                    date: '2016-05-06',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
-                },
-                    {
-                    date: '2016-05-06',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
-                },
-
-                    {
-                    date: '2016-05-07',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
-                }],
-                currentPage4: 4,
+                tableData:[],
+                pageInfo:{},
                 dialogFormVisible: false,
                 formLabelWidth: '120px',
                 form: {
@@ -161,12 +123,17 @@
                     region: '',
                 },
                 // loading:true
-                loading:false
+                loading:false,
+
             }
+        },
+        created:function(){
+            this.log.debug('created')
+            this.requestQuery();
         },
         methods: {
             onSearchSubmit() {
-                        window.console.log(JSON.stringify(this.searchFormModel));
+                        // window.console.log(JSON.stringify(this.searchFormModel));
 
                 // this.$refs['searchForm'].validate(valid => {
                 //     if (valid) {
@@ -185,12 +152,74 @@
                 this.dialogFormVisible = true
             },
             handleSizeChange(val) {
-                window.console.log(`每页 ${val} 条`);
+                this.log.debug(`每页 ${val} 条`);
+                let queryCondition = this.queryCondition;
+                queryCondition.length = val;
+                this.queryCondition = queryCondition;
+                this.requestQuery();
             },
             handleCurrentChange(val) {
-                window.console.log(`当前页: ${val}`);
+                this.log.debug(`当前页: ${val}`);
+                let queryCondition = this.queryCondition;
+                queryCondition.start = val-1;
+                this.queryCondition = queryCondition;
+                this.requestQuery();
+            },
+            onRefresh(){
+                let queryCondition = this.queryCondition;
+                // queryCondition.length = 10;
+                queryCondition.start = 0;
+                queryCondition.cdtCustom.userName = null;
+                this.queryCondition = queryCondition;
+              this.requestQuery();
+            },
+            //请求查询
+            requestQuery() {
+                this.log.infoJson('请求参数：',this.queryCondition)
+                this.$api.sysUser.query(this.queryCondition).then((res) => {
+                    // this.log.debug(res.data)
+                    if (res.code !== 0) {
+                        this.$message({
+                            message: res.msg,
+                            type: 'error'
+                        })
+                    } else {
+                        this.pageInfo = res.data;
+                        this.tableData = res.data.list;
+                        // this.log.infoJson('系统用户数据：',this.tableData)
+                        // this.requ = res.data.list;
+
+                    }
+                    // this.loading = false
+                }).catch((res) => {
+                    this.$message({
+                        message: res.message,
+                        type: 'error'
+                    })
+                });
+                // this.changeVerifCode();
+                // loading.close();
+            },
+            //时间格式化
+            // dateFormat(row, column, cellValue, index){
+            dateFormat(row, column){
+                // this.log.debug(`cellValue: ${cellValue},index: ${index}`);
+                const daterc = row[column.property]
+                if(daterc!=null){
+                    const dateMat= new Date(daterc);
+                    const year = dateMat.getFullYear();
+                    const month = dateMat.getMonth() + 1;
+                    const day = dateMat.getDate();
+                    const hh = dateMat.getHours();
+                    const mm = dateMat.getMinutes();
+                    const ss = dateMat.getSeconds();
+                    const timeFormat= year + "-" + month + "-" + day + " " + hh + ":" + mm + ":" + ss;
+                    return timeFormat;
+                }
+
             }
         }
+
     }
 </script>
 

@@ -3,6 +3,7 @@
 
         <el-tabs v-model="tabsValue" type="card" @tab-remove="removeTab" @tab-click="clickTab">
             <el-tab-pane
+
                     v-for="(item, index) in tabsData"
                     :key="index"
                     :label="item.title"
@@ -12,13 +13,14 @@
                 <transition>
                     <keep-alive>
                         <router-view></router-view>
-<!--                                        <router-view :name="item.routeComponent"></router-view>-->
+                        <!--<router-view :name="item.routeComponent"></router-view>-->
                     </keep-alive>
                 </transition>
 <!--                <router-view :name="item.routeComponent"></router-view>-->
 <!--                <sk-iframe></sk-iframe>-->
             </el-tab-pane>
         </el-tabs>
+
     </el-main>
 </template>
 

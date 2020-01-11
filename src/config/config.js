@@ -5,7 +5,7 @@ export const config = {
 
 };
 // 后台管理系统服务器地址
-export const baseUrl = 'http://172.31.211.181:8081/sk/'
+export const baseUrl = 'http://localhost:8081/sk/'
 export const logLevelObj={
     debug: 1,
     info: 2,

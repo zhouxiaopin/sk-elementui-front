@@ -32,7 +32,7 @@ const router = new Router({
                     path:'/sysManage/sysUser',
                     name:'SysUser',
                     component:SysUser,
-                    // components:{SysUser},
+                    // components:{default:null,SysUser},
                     meta:{
                         // keepAlive: true // true需要缓存，false不需要缓存
                         // title: 'SK后台管理系统'
@@ -42,7 +42,7 @@ const router = new Router({
                     path:'/sysManage/sysResource',
                     name:'SysResource',
                     component:SysResource,
-                    // components:{SysUser},
+                    // components:{SysResource},
                     meta:{
                         // keepAlive: true // true需要缓存，false不需要缓存
                         // title: 'SK后台管理系统'
