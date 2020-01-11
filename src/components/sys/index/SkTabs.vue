@@ -12,8 +12,8 @@
             >
                 <transition>
                     <keep-alive>
-                        <router-view></router-view>
-                        <!--<router-view :name="item.routeComponent"></router-view>-->
+                        <!--<router-view></router-view>-->
+                        <router-view :name="item.routeComponent"></router-view>
                     </keep-alive>
                 </transition>
 <!--                <router-view :name="item.routeComponent"></router-view>-->

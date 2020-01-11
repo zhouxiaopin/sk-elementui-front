@@ -4,7 +4,9 @@ import store from '../store'
 import Index from '@/views/Index'
 import Login from '@/views/Login'
 import SysUser from '@/views/sysManage/SysUser'
+import SysRole from '@/views/sysManage/SysRole'
 import SysResource from '@/views/sysManage/SysResource'
+import SysLog from '@/views/sysManage/SysLog'
 import Home from '@/views/Home'
 
 Vue.use(Router);
@@ -31,8 +33,18 @@ const router = new Router({
                 {
                     path:'/sysManage/sysUser',
                     name:'SysUser',
-                    component:SysUser,
-                    // components:{default:null,SysUser},
+                    // component:SysUser,
+                    components:{SysUser},
+                    meta:{
+                        // keepAlive: true // true需要缓存，false不需要缓存
+                        // title: 'SK后台管理系统'
+                    }
+                },
+                {
+                    path:'/sysManage/sysRole',
+                    name:'SysRole',
+                    component:SysRole,
+                    components:{SysRole},
                     meta:{
                         // keepAlive: true // true需要缓存，false不需要缓存
                         // title: 'SK后台管理系统'
@@ -41,8 +53,18 @@ const router = new Router({
                 {
                     path:'/sysManage/sysResource',
                     name:'SysResource',
-                    component:SysResource,
-                    // components:{SysResource},
+                    // component:SysResource,
+                    components:{SysResource},
+                    meta:{
+                        // keepAlive: true // true需要缓存，false不需要缓存
+                        // title: 'SK后台管理系统'
+                    }
+                },
+                {
+                    path:'/sysManage/SysLog',
+                    name:'SysLog',
+                    // component:SysResource,
+                    components:{SysLog},
                     meta:{
                         // keepAlive: true // true需要缓存，false不需要缓存
                         // title: 'SK后台管理系统'
@@ -51,8 +73,8 @@ const router = new Router({
                 {
                     path:'/',
                     name:'Home',
-                    component:Home,
-                    // components:{Home},
+                    // component:Home,
+                    components:{Home},
                     // meta:{
                     //     title: 'SK后台管理系统'
                     // }

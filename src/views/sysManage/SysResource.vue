@@ -258,6 +258,7 @@
             requestSysResTree(){
                 this.$api.sysResource.queryAllByCondition({}).then((res) => {
                     // this.log.debug(JSON.stringify(listToTree("rId","parentId",res.data)));
+                    this.log.debug(JSON.stringify(listToTree("rId","parentId",res.data)));
                     if(res.code === 0) {
                         this.leftTreeData = listToTree("rId","parentId",res.data);
                     } else {
