@@ -133,7 +133,7 @@
                         // let minute = 60*;
                         // let expires = new Date(new Date() * 1 + seconds * 1000);
 
-                        Cookies.set('X-Access-Token', res.data.token, { expires: res.data.expiresTime });// 放置token到Cookie
+                        Cookies.set('X-Access-Token', res.data.token, { expires: new Date(res.data.expiresTime) });// 放置token到Cookie
 
                         sessionStorage.setItem('user', JSON.stringify(res.data.user));// 保存用户到本地会话
                         // this.$store.commit('menuRouteLoaded', false) // 要求重新加载导航菜单
