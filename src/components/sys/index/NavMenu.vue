@@ -117,7 +117,7 @@
                     } else {
                         this.$message({
                             message: res.msg,
-                            type: 'info'
+                            type: 'error'
                         })
                     }
                     // this.loading = false

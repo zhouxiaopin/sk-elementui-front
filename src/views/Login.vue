@@ -17,7 +17,7 @@
                         <canvas ref="verifCodeCanvas" @click="changeVerifCode()" width="90px" height="40px" style="vertical-align:middle">浏览器不支持</canvas>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="submitForm('loginForm')">提交</el-button>
+                        <el-button type="primary" @click="submitForm('loginForm')" @keyup.enter="submitForm('loginForm')">提交</el-button>
                         <el-button @click="resetForm('loginForm')">重置</el-button>
                     </el-form-item>
                 </el-form>
@@ -129,8 +129,13 @@
                             type: 'error'
                         })
                     } else {
-                        Cookies.set('X-Access-Token', res.data);// 放置token到Cookie
-                        sessionStorage.setItem('userName', this.loginForm.userName);// 保存用户到本地会话
+                        // let seconds = 10;
+                        // let minute = 60*;
+                        // let expires = new Date(new Date() * 1 + seconds * 1000);
+
+                        Cookies.set('X-Access-Token', res.data.token, { expires: res.data.expiresTime });// 放置token到Cookie
+
+                        sessionStorage.setItem('user', JSON.stringify(res.data.user));// 保存用户到本地会话
                         // this.$store.commit('menuRouteLoaded', false) // 要求重新加载导航菜单
                         this.$router.replace('/').catch(err => {err})  // 登录成功，跳转到主页
                     }

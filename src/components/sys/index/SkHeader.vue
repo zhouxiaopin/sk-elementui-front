@@ -10,7 +10,7 @@
             <el-dropdown @command="handleCommand">
                 <span class="el-dropdown-link">
                     <i class="el-icon-edit"></i>
-                    欢迎你，admin<i class="el-icon-arrow-down el-icon--right"></i>
+                    欢迎你，{{user.userName}}<i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
 
                 <el-dropdown-menu slot="dropdown">
@@ -33,6 +33,14 @@
     import Cookies from "js-cookie";
     export default {
         name: "SkHeader",
+        data() {
+            return {
+                user:JSON.parse(sessionStorage.getItem('user')),
+            }
+        },
+        create: function () {
+           // window.console.log('user:',sessionStorage.getItem('user'))
+        },
         methods: {
             // 折叠导航栏
             onCollapse() {
@@ -70,7 +78,7 @@
                             this.log.debug(JSON.stringify(res))
                             if(res.code === 0) {
                                 Cookies.remove('X-Access-Token');//从Cookie移除token
-                                sessionStorage.removeItem('userName')//从本地会话移除用户
+                                sessionStorage.removeItem('user')//从本地会话移除用户
                                 // this.$store.commit('menuRouteLoaded', false) // 要求重新加载导航菜单
                                 this.$router.replace('/login').catch(err => {err})  // 登录成功，跳转到主页
                             } else {
@@ -123,7 +131,8 @@
 
         & > section:nth-child(2) {
             height: 100%;
-            width: 168px;
+            /*width: 168px;*/
+            /*width: 200px;*/
 
             .el-dropdown {
                 height: 100%;

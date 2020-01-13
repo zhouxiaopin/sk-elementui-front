@@ -79,12 +79,20 @@ export default function $axios(options) {
         }
 
         // 根据返回的code值来做不同的处理
-        switch (data.rc) {
-          case 1:
-            window.console.log(data.desc)
-            break;
-          case 0:
-            this.$store.commit('changeState')
+        switch (data.code) {
+          // case 1:
+          //   window.console.log(data.msg)
+          //   break;
+          // case 0:
+          //   this.$store.commit('changeState')
+          //       break
+          case -14://token失效
+            Cookies.remove('X-Access-Token');//从Cookie移除token
+            sessionStorage.removeItem('user')//从本地会话移除用户
+            // 重定向到登录页面
+            window.console.log(data.msg)
+            router.push('/login').catch(err => {err})
+            break
           // console.log('登录成功')
         }
         // 若不是正确的返回code，且已经登录，就抛出错误
