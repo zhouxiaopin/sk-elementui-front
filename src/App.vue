@@ -23,18 +23,23 @@ export default {
 
 <style lang="scss">
 /*<style lang="less">*/
+.minScrollbar::-webkit-scrollbar{
+    width: 2px;
+    height: 2px;
+    /*background: rgba(00,00,00,0.8);*/
+}
 body::-webkit-scrollbar,.scrollbar::-webkit-scrollbar{
     width: 6px;
     height: 6px;
     /*background: rgba(00,00,00,0.8);*/
 }
-body::-webkit-scrollbar-track,.scrollbar::-webkit-scrollbar-track{
+body::-webkit-scrollbar-track,.scrollbar::-webkit-scrollbar-track,.minScrollbar::-webkit-scrollbar-track{
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
     border-radius: 8px;
     /*background: rgba(00,00,00,0.8);*/
     background: rgba(255,255,255,0.9);
 }
-body::-webkit-scrollbar-thumb,.scrollbar::-webkit-scrollbar-thumb {
+body::-webkit-scrollbar-thumb,.scrollbar::-webkit-scrollbar-thumb,.minScrollbar::-webkit-scrollbar-thumb{
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
     border-radius: 8px;
     background: #CDCDCD;
@@ -102,6 +107,9 @@ $themeColor: #19A97B;
         }
         .font-18{
             font-size: 18px;
+        }
+        .font-20{
+            font-size: 20px;
         }
 
         /*背景色*/

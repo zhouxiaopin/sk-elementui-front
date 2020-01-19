@@ -15,7 +15,7 @@ const store = new Vuex.Store({
         app,
         navMenu,
         tabs,
-    }
+    },
 });
 
 export default store

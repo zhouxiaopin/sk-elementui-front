@@ -6,21 +6,25 @@
             <img src="@/assets/logo.png"/> <span class="mgl-10">{{isCollapse?'':appName}}</span>
         </div>
         <!-- 导航菜单 -->
-        <transition name='fade'>
-            <!--            <el-menu :default-active="curMenuActive" class="el-menu-vertical" @open="handleOpen" @close="handleClose"-->
-            <el-menu :default-active="this.$route.path" class="el-menu-vertical sysMenu scrollbar"
-                     :active-text-color="themeColor"
-                     @select="selectMenu" :collapse="isCollapse" :collapse-transition="false">
-                <!--            <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">-->
-                <span v-for="(item,index) in treeSysMenu" :key="index">
+        <div class="sysMenu minScrollbar">
+            <transition name='fade'>
+                <!--            <el-menu :default-active="curMenuActive" class="el-menu-vertical" @open="handleOpen" @close="handleClose"-->
+                <el-menu :default-active="this.$route.path" class="el-menu-vertical"
+                         :active-text-color="themeColor"
+                         @select="selectMenu" :collapse="isCollapse" :collapse-transition="false">
+                    <!--            <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">-->
+                    <span v-for="(item,index) in treeSysMenu" :key="index">
 <!--                        <el-menu-item v-if="!item.child||item.child.length<1" :index="item.id" route="{name:'home'}">-->
                         <el-menu-item v-if="!item.children||item.children.length<1" :index="item.attrs.routePath">
-                            <i v-if="item.leftIcon" :class="item.leftIcon"></i>
+<!--                            <i v-if="item.attrs.leftIcon" :class="item.attrs.leftIcon.substring(0,2)=='el'? item.attrs.leftIcon: ''"></i>-->
+                            <i v-if="item.attrs.leftIcon" :class="item.attrs.leftIcon" style="display: inline-block"  :style="{'margin-left':item.attrs.leftIcon.substring(0,2)=='fa'?'3px':'',
+                                    'margin-right':item.attrs.leftIcon.substring(0,2)=='fa'?'8px':''}" aria-hidden="true" ></i>
                             <span slot="title">{{item.name}}</span>
                         </el-menu-item>
                         <el-submenu v-else :index="item.attrs.routePath">
                             <template slot="title">
                                 <i v-if="item.leftIcon" :class="item.leftIcon"></i>
+                                <i v-if="item.attrs.leftIcon" :class="item.attrs.leftIcon" aria-hidden="true" ></i>
                                 <span slot="title">{{item.name}}</span>
                             </template>
                             <span v-for="(item2,index2) in item.children" :key="index2">
@@ -50,8 +54,9 @@
                             </span>
                         </el-submenu>
                     </span>
-            </el-menu>
-        </transition>
+                </el-menu>
+            </transition>
+        </div>
     </el-aside>
 </template>
 
@@ -104,9 +109,9 @@
                         let treeSysMenu = res.data.treeSysMenu[0].children;
                         // let treeSysMenu = res.data.treeSysMenu[0].children;
                         let homeItem = {"routePath":"/","routeComponent":'Home',"routeName":'Home',
-                            "rType":"01","rLevel":2,"rName":"首页","leftIcon":"","rId":-1,"rSort":null,"parentId":null,"close":true};
+                            "rType":"01","rLevel":2,"rName":"首页","leftIcon":"fa fa-address-book","rId":-1,"rSort":null,"parentId":null,"close":true};
                         let treeHomeItem =  {"id":"-1","name":"首页","parentId":null,"order":null,
-                            "level":0,"attrs":{"routePath":'/',"routeComponent":'Home',"leftIcon":null,"close":true,
+                            "level":0,"attrs":{"routePath":'/',"routeComponent":'Home',"leftIcon":'fa fa-home fa-lg',"close":true,
                                 "routeName":'Home'},"children":null};
                         sysMenu.unshift(homeItem);
                         treeSysMenu.unshift(treeHomeItem);
@@ -189,13 +194,15 @@
                 /*padding-left: 30px !important;*/
             }
         }
-
-        .el-menu {
+        .sysMenu{
             padding-top: 5px;
+            overflow-y: scroll;
             height: 90%;
-            &.sysMenu{
-                overflow-y: scroll;
-            }
+        }
+        .el-menu {
+            /*padding-top: 5px;*/
+            /*height: 90%;*/
+
             .el-menu-item {
                 &.is-active {
                     border-right: 3px solid;
@@ -210,3 +217,20 @@
 
     }
 </style>
+<style lang="scss">
+    .NavMenu{
+        .el-menu{
+            .el-menu-item{
+                display: flex;
+                align-items: center;
+            }
+            .el-submenu{
+                .el-menu-item{
+                    min-width: 50px;
+                }
+            }
+        }
+
+    }
+</style>
+

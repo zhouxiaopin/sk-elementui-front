@@ -4,6 +4,7 @@ export default {
     * 调用{{this.$store.state.userName}}
     * */
     state:{
+        // defaultState:null,//默认的vuex值
         appName: "sk学习学习学习系统",  // 应用名称
         headerWelcome: "欢迎进入sk学习系统",  // 头部欢迎语
         // themeColor: "#1890FF",  // 主题颜色
@@ -33,6 +34,8 @@ export default {
     * dispatch是调用action的方法。
     * */
     actions:{
-
+        // setDefaultState(state,value){
+        //     state.defaultState = value
+        // }
     }
 }

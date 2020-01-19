@@ -5,6 +5,7 @@ import Index from '@/views/Index'
 import Login from '@/views/Login'
 import SysUser from '@/views/sysManage/SysUser'
 import SysRole from '@/views/sysManage/SysRole'
+import SysPermis from '@/views/sysManage/SysPermis'
 import SysResource from '@/views/sysManage/SysResource'
 import SysLog from '@/views/sysManage/SysLog'
 import Home from '@/views/Home'
@@ -45,6 +46,16 @@ const router = new Router({
                     name:'SysRole',
                     component:SysRole,
                     components:{SysRole},
+                    meta:{
+                        // keepAlive: true // true需要缓存，false不需要缓存
+                        // title: 'SK后台管理系统'
+                    }
+                },
+                {
+                    path:'/sysManage/SysPermis',
+                    name:'SysPermis',
+                    // component:SysPermis,
+                    components:{SysPermis},
                     meta:{
                         // keepAlive: true // true需要缓存，false不需要缓存
                         // title: 'SK后台管理系统'

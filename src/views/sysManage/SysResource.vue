@@ -3,12 +3,13 @@
         <el-row :gutter="10">
             <el-col :span="4">
                 <el-tree
+                        ref="tree"
                         :data="leftTreeData"
                         :expand-on-click-node="false"
+                        @node-click="treeNodeClick"
                         default-expand-all
                         node-key="rId"
                         style="overflow-y: scroll;height: 81vh"
-                        ref="tree"
                         :props="defaultProps">
                 </el-tree>
             </el-col>
@@ -16,16 +17,16 @@
                 <div class="content">
                     <!--搜索区域-->
                     <div>
-                        <el-form ref="searchForm" :model="searchFormModel"  :inline="true" size="small">
+                        <el-form ref="searchForm" :model="queryCondition.cdtCustom"  :inline="true" size="small">
                             <!--            <el-form ref="searchForm" :model="searchFormModel" label-width="auto" :inline="true" size="small">-->
-                            <el-form-item label="用户名">
-                                <el-input v-model="searchFormModel.userName"></el-input>
+                            <el-form-item label="父节点查询:">
+                                <el-radio-group v-model="queryCondition.isParentQuery" @change="isParentQueryChange">
+                                    <el-radio label="1">是</el-radio>
+                                    <el-radio label="0">否</el-radio>
+                                </el-radio-group>
                             </el-form-item>
-                            <el-form-item label="用户名">
-                                <el-input v-model="searchFormModel.userName"></el-input>
-                            </el-form-item>
-                            <el-form-item label="用户名">
-                                <el-input v-model="searchFormModel.userName"></el-input>
+                            <el-form-item label="资源名">
+                                <el-input v-model="queryCondition.cdtCustom.userName"></el-input>
                             </el-form-item>
                             <el-form-item>
                                 <el-button type="primary" icon="el-icon-search" @click="onSearchSubmit">搜索</el-button>
@@ -46,7 +47,7 @@
                             element-loading-text="拼命加载中"
                             element-loading-spinner="el-icon-loading"
                             element-loading-background="rgba(0, 0, 0, 0.6)"
-                            :data="tableData3"
+                            :data="tableData"
                             tooltip-effect="dark"
                             :border="true"
                             class="wp-100">
@@ -55,29 +56,53 @@
                                 width="55">
                         </el-table-column>
                         <el-table-column
-                                label="日期">
-                            <template slot-scope="scope">{{ scope.row.date }}</template>
+                                prop="rName"
+                                label="资源名">
                         </el-table-column>
                         <el-table-column
-                                prop="name"
-                                label="姓名">
+                                prop="routePath"
+                                label="路由路径">
                         </el-table-column>
                         <el-table-column
-                                prop="name"
-                                label="姓名">
+                                prop="routeName"
+                                label="路由名">
                         </el-table-column>
                         <el-table-column
-                                prop="name"
-                                label="姓名">
+                                prop="routeComponent"
+                                label="路由组件">
                         </el-table-column>
                         <el-table-column
-                                prop="name"
-                                label="姓名">
+                                prop="parentName"
+                                label="父级">
                         </el-table-column>
                         <el-table-column
-                                prop="address"
-                                label="地址"
-                                show-overflow-tooltip>
+                                prop="rType"
+                                label="类型">
+                        </el-table-column>
+                        <el-table-column
+                                prop="rLevelStr"
+                                label="级别">
+                        </el-table-column>
+                        <el-table-column
+                                prop="rSort"
+                                label="排序">
+                        </el-table-column>
+                        <el-table-column
+                                prop="descri"
+                                label="描述" show-overflow-tooltip>
+                        </el-table-column>
+                        <el-table-column
+                                prop="userName"
+                                label="创建人">
+                        </el-table-column>
+                        <el-table-column
+                                prop="createTime"
+                                :formatter="dateFormat"
+                                label="创建时间">
+                        </el-table-column>
+                        <el-table-column
+                                prop="recordStatus"
+                                label="状态" >
                         </el-table-column>
                         <el-table-column
                                 fixed="right"
@@ -94,11 +119,11 @@
                         <el-pagination
                                 @size-change="handleSizeChange"
                                 @current-change="handleCurrentChange"
-                                :current-page="currentPage4"
-                                :page-sizes="[100, 200, 300, 400]"
-                                :page-size="100"
+                                :current-page="pageInfo.pageNum"
+                                :page-sizes="[5,10,100, 200, 300]"
+                                :page-size="pageInfo.pageSize"
                                 layout="total, prev, pager, next, jumper, sizes"
-                                :total="800">
+                                :total="pageInfo.total">
                         </el-pagination>
                     </div>
                     <!--添加框-->
@@ -131,91 +156,28 @@
 
 <script>
     import {listToTree} from '@/utils/tree'
+    import {dateFormat} from '@/utils/date'
     export default {
         name: "SysResource",
         data() {
             return {
                 leftTreeData:[],
-                data: [{
-                    id: 1,
-                    label: '一级 1',
-                    children: [{
-                        id: 4,
-                        label: '二级 1-1',
-                        children: [{
-                            id: 9,
-                            label: '三级 1-1-1'
-                        }, {
-                            id: 10,
-                            label: '三级 1-1-2'
-                        }]
-                    }]
-                }, {
-                    id: 2,
-                    label: '一级 2',
-                    children: [{
-                        id: 5,
-                        label: '二级 2-1'
-                    }, {
-                        id: 6,
-                        label: '二级 2-2'
-                    }]
-                }, {
-                    id: 3,
-                    label: '一级 3',
-                    children: [{
-                        id: 7,
-                        label: '二级 3-1'
-                    }, {
-                        id: 8,
-                        label: '二级 3-2'
-                    }]
-                }],
                 defaultProps: {
                     children: 'children',
                     label: 'rName'
                 },
-                searchFormModel:{
-                    userName:''
+                queryCondition:{
+                    start:0,//当前第几页
+                    length:5,//页面显示数量
+                    isParentQuery: '1',
+                    // orderBy: 'r_sort asc',
+                    cdtCustom:{
+                        parentId:null,
+                        userName:null
+                    }
                 },
-                tableData3: [{
-                    date: '2016-05-03',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
-                }, {
-                    date: '2016-05-02',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
-                }, {
-                    date: '2016-05-04',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
-                }, {
-                    date: '2016-05-01',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
-                }, {
-                    date: '2016-05-08',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
-                },
-                    {
-                        date: '2016-05-06',
-                        name: '王小虎',
-                        address: '上海市普陀区金沙江路 1518 弄'
-                    },
-                    {
-                        date: '2016-05-06',
-                        name: '王小虎',
-                        address: '上海市普陀区金沙江路 1518 弄'
-                    },
-
-                    {
-                        date: '2016-05-07',
-                        name: '王小虎',
-                        address: '上海市普陀区金沙江路 1518 弄'
-                    }],
-                currentPage4: 4,
+                tableData:[],
+                pageInfo:{},
                 dialogFormVisible: false,
                 formLabelWidth: '120px',
                 form: {
@@ -226,41 +188,55 @@
                 loading:false
             };
         },
-        created(){
+        // created(){
+        // },
+        mounted: function () {
             this.requestSysResTree();
         },
         methods: {
             onSearchSubmit() {
-                window.console.log(JSON.stringify(this.searchFormModel));
-
-                // this.$refs['searchForm'].validate(valid => {
-                //     if (valid) {
-                //         if (this.loginForm.verifCode !== this.curVerifCode) {
-                //             this.$message.error('验证码错误');
-                //             return;
-                //         }
-                //         window.console.log(JSON.stringify(this.loginForm));
-                //     } else {
-                //         window.console.log('error submit!!');
-                //         return false;
-                //     }
-                // });
+                window.console.log(JSON.stringify(this.queryCondition));
+                window.console.log(this.$refs.tree.getCurrentKey());
+                this.requestQuery();
             },
             add(){
                 this.dialogFormVisible = true
             },
+            isParentQueryChange(lable){
+                window.console.log('是否选中父查询：'+lable);
+                this.requestQuery();
+            },
             handleSizeChange(val) {
-                window.console.log(`每页 ${val} 条`);
+                this.log.debug(`每页 ${val} 条`);
+                let queryCondition = this.queryCondition;
+                queryCondition.length = val;
+                this.queryCondition = queryCondition;
+                this.requestQuery();
             },
             handleCurrentChange(val) {
-                window.console.log(`当前页: ${val}`);
+                this.log.debug(`当前页: ${val}`);
+                let queryCondition = this.queryCondition;
+                queryCondition.start = val-1;
+                this.queryCondition = queryCondition;
+                this.requestQuery();
             },
+            treeNodeClick(data){
+                if (data.children){
+                    this.requestQuery();
+                }
+                this.log.debugJson('',data);
+                // this.log.debugJson('', Node);
+            },
+            //请求查询系统资源树
             requestSysResTree(){
-                this.$api.sysResource.queryAllByCondition({}).then((res) => {
+                this.$api.sysResource.queryAllByCondition({orderBy: 'r_sort asc'}).then((res) => {
                     // this.log.debug(JSON.stringify(listToTree("rId","parentId",res.data)));
-                    this.log.debug(JSON.stringify(listToTree("rId","parentId",res.data)));
                     if(res.code === 0) {
-                        this.leftTreeData = listToTree("rId","parentId",res.data);
+                        // this.$set(this.leftTreeData, 'b', 'obj.b')
+                        let leftTreeData = listToTree("rId","parentId",res.data);
+                        this.leftTreeData = leftTreeData;
+
+                        // this.requestQuery();
                     } else {
                         this.$message({
                             message: res.msg,
@@ -274,6 +250,51 @@
                         type: 'error'
                     })
                 });
+            },
+            //请求查询
+            requestQuery() {
+                let queryCondition = this.queryCondition;
+                let cdtCustom = queryCondition.cdtCustom;
+                // this.log.infoJson('请求参数：',queryCondition);
+                if (queryCondition.isParentQuery=='1') {
+                    this.log.debugJson('',this.leftTreeData[0].rName);
+                    cdtCustom.parentId = this.$refs.tree.getCurrentKey()||this.leftTreeData[0].rId;
+                }else{
+                    cdtCustom.parentId = null;
+                }
+                queryCondition.cdtCustom = cdtCustom;
+                this.queryCondition = queryCondition;
+                this.$api.sysResource.query(queryCondition).then((res) => {
+                    // this.log.debug(res.data)
+                    if (res.code !== 0) {
+                        this.$message({
+                            message: res.msg,
+                            type: 'error'
+                        })
+                    } else {
+                        this.pageInfo = res.data;
+                        this.tableData = res.data.list;
+                        // this.log.infoJson('系统用户数据：',this.tableData)
+                        // this.requ = res.data.list;
+
+                    }
+                    // this.loading = false
+                }).catch((res) => {
+                    this.$message({
+                        message: res.message,
+                        type: 'error'
+                    })
+                });
+                // this.changeVerifCode();
+                // loading.close();
+            },
+            //时间格式化
+            // dateFormat(row, column, cellValue, index){
+            dateFormat(row, column){
+                // this.log.debug(`cellValue: ${cellValue},index: ${index}`);
+                let date = row[column.property];
+                return dateFormat(date);
+
             }
         }
     }

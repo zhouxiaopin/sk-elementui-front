@@ -6,7 +6,7 @@ import api from './http'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'normalize.css' //统一浏览器的初始样式
-// import 'font-awesome/css/font-awesome.min.css'
+import 'font-awesome/css/font-awesome.min.css'
 import '@/assets/iconfont/iconfont.css'
 //模拟数据
 import './mock'

@@ -19,11 +19,20 @@ export const queryAllByCondition = data => {
         data
     })
 }
-// 查询系统资源树
-export const querySysResourceTree = data => {
+
+// 分页查询
+export const query = data => {
     return axios({
-        url: 'sysResource/querySysResourceTree',
+        url: 'sysResource/query',
         method: 'post',
         data
     })
 }
+// 查询系统资源树
+// export const querySysResourceTree = data => {
+//     return axios({
+//         url: 'sysResource/querySysResourceTree',
+//         method: 'post',
+//         data
+//     })
+// }

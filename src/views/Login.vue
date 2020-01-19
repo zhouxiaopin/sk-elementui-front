@@ -2,7 +2,7 @@
     <div class="Login">
         <div class="left-content"></div>
         <div class="right-content">
-            <div class="login-box">
+            <div class="login-box" @keyup.enter="submitForm('loginForm')">
                 <div class="logo"><img src="@/assets/img/login_logo.png" alt=""></div>
                 <p class="font-18">SK后台管理系统</p>
                 <el-form :model="loginForm" status-icon :rules="loginRules" ref="loginForm" label-width="auto">
@@ -14,11 +14,11 @@
                     </el-form-item>
                     <el-form-item label="验证码" prop="verifCode">
                         <el-input type="text" v-model="loginForm.verifCode" auto-complete="off" placeholder="请输入验证码" style="width: 65%;margin-right: 10px"></el-input>
-                        <canvas ref="verifCodeCanvas" @click="changeVerifCode()" width="90px" height="40px" style="vertical-align:middle">浏览器不支持</canvas>
+                        <canvas ref="verifCodeCanvas" @click.stop="changeVerifCode()" width="90px" height="40px" style="vertical-align:middle">浏览器不支持</canvas>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="submitForm('loginForm')" @keyup.enter="submitForm('loginForm')">提交</el-button>
-                        <el-button @click="resetForm('loginForm')">重置</el-button>
+                        <el-button type="primary" @click.native.prevent="submitForm('loginForm')">提交</el-button>
+                        <el-button @click.native.prevent="resetForm('loginForm')">重置</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex'
     import {drawPic} from '@/utils/verifCode'
     import Cookies from "js-cookie";
     export default {
@@ -77,7 +78,12 @@
                 }
             };
         },
+        create:function(){
+        },
         mounted: function () {
+            if (this.sysMenu){
+                window.location.reload();
+            }
             //画验证码
             this.changeVerifCode();
         },
@@ -148,7 +154,19 @@
                 });
                 // this.changeVerifCode();
                 loading.close();
+            },
+            deepClone (obj) {
+                let newObj = obj instanceof Array ? [] : {};
+                for (let i in obj) {
+                    newObj[i] = typeof obj[i] === 'object' ? this.deepClone(obj[i]) : obj[i]
+                }
+                return newObj
             }
+        },
+        computed:{
+            ...mapState({
+                sysMenu: state=>state.navMenu.sysMenu
+            })
         }
     }
 </script>

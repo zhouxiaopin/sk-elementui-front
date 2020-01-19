@@ -2,6 +2,7 @@ import axios from 'axios';
 import config from './config';
 import Cookies from "js-cookie";
 import router from '@/router'
+import log from '@/utils/log'
 
 // 使用vuex做全局loading时使用
 // import store from '@/store'
@@ -41,7 +42,7 @@ export default function $axios(options) {
           // config.data = qs.stringify(config.data)
           // }
         }
-
+        log.infoJson('请求参数：',config.data);
         return config
       },
 
@@ -79,13 +80,17 @@ export default function $axios(options) {
         }
 
         // 根据返回的code值来做不同的处理
+        let minute = 60*30;
         switch (data.code) {
           // case 1:
           //   window.console.log(data.msg)
           //   break;
-          // case 0:
-          //   this.$store.commit('changeState')
-          //       break
+          case 0:
+            //更新token过期时间
+            // let seconds = 10;
+            Cookies.set('X-Access-Token', Cookies.get('X-Access-Token'), { expires: new Date(new Date() * 1 + minute * 1000) });// 放置token到Cookie
+            // this.$store.commit('changeState')
+            break
           case -14://token失效
             Cookies.remove('X-Access-Token');//从Cookie移除token
             sessionStorage.removeItem('user')//从本地会话移除用户
