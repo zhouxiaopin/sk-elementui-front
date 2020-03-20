@@ -2,16 +2,13 @@
     <div class="SysPermis view-area">
         <el-row :gutter="10">
             <el-col :span="4">
-                <el-tree
-                        ref="tree"
-                        :data="leftTreeData"
-                        :expand-on-click-node="false"
-                        @node-click="treeNodeClick"
-                        default-expand-all
-                        :node-key="idKey"
-                        style="overflow-y: scroll;height: 81vh"
-                        :props="defaultProps">
-                </el-tree>
+                <sk-nav-tree
+                        ref="navTree"
+                        expandAll
+                        scCode="sys_permis_tree"
+                        @requestQuery="requestQuery"
+                        height="81vh">
+                </sk-nav-tree>
             </el-col>
             <el-col :span="20">
                 <div class="content">
@@ -48,7 +45,8 @@
 </template>
 
 <script>
-    import {listToTree} from '@/utils/tree'
+    /*eslint-disable*/
+    import SkNavTree from '@/components/sys/common/SkNavTree'
     import {PermisConf} from '@/config/permisCofig'
     import Add from './Add'
     import Update from './Update'
@@ -61,16 +59,12 @@
     export default {
         name: "SysPermis",
         components:{
+            SkNavTree,
             Add,
             Update
         },
         data() {
             return {
-                leftTreeData:[],
-                defaultProps: {
-                    children: 'children',
-                    label: 'perName'
-                },
                 idKey:idKey,
                 addConf:{
                     // title:'添加',
@@ -130,7 +124,6 @@
             };
         },
         created: function () {
-            this.requestSysPermisTree();
             //添加权限前缀
             this.btnOptBarData.forEach(item=>item.permis?item.permis = PERM_PREFIX+item.permis:item);
             this.columns[this.columns.length-1].btns.forEach(item=>item.permis?item.permis = PERM_PREFIX+item.permis:item);
@@ -142,25 +135,6 @@
             isParentQueryChange(lable){
                 window.console.log('是否选中父查询：'+lable);
                 this.requestQuery();
-            },
-            treeNodeClick(data){
-                if (data.children){
-                    this.requestQuery();
-                }
-                this.log.debugJson('',data);
-                // this.log.debugJson('', Node);
-            },
-            //请求查询系统权限树
-            requestSysPermisTree(){
-                this.$api.SysPermis.queryAllByCondition({orderBy: 'per_sort asc'}).then((res) => {
-                    if(res.code === 0) {
-                        // this.$set(this.leftTreeData, 'b', 'obj.b')
-                        let leftTreeData = listToTree(idKey,"parentId",res.data);
-                        this.leftTreeData = leftTreeData;
-
-                        this.requestQuery();
-                    }
-                });
             },
             //添加
             addHandler(){
@@ -190,12 +164,12 @@
                 this.requestQuery();
             },
             //请求查询
-            requestQuery() {
+            requestQuery(key) {
                 this.loading = true;
                 let queryCondition = this.queryCondition;
                 let cdtCustom = queryCondition.cdtCustom;
                 if (queryCondition.isParentQuery=='1') {
-                    cdtCustom.parentId = this.$refs.tree.getCurrentKey()||this.leftTreeData[0][idKey];
+                    cdtCustom.parentId = key?key:this.$refs.navTree.getCurrentKey();
                 }else{
                     cdtCustom.parentId = null;
                 }
