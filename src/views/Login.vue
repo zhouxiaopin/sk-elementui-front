@@ -136,7 +136,8 @@
 
                         Cookies.set('X-Access-Token', res.data.token, { expires: new Date(res.data.expiresTime) });// 放置token到Cookie
 
-                        sessionStorage.setItem('user', JSON.stringify(res.data.user));// 保存用户到本地会话
+                        // sessionStorage.setItem('user', JSON.stringify(res.data.user));// 保存用户到本地会话
+                        localStorage.setItem('user', JSON.stringify(res.data.user));// 保存用户到本地会话
                         this.$store.commit('menuRouteLoaded', false) // 要求重新加载导航菜单
                         this.$router.replace('/').catch(err => {err})  // 登录成功，跳转到主页
                     }

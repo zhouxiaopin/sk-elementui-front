@@ -42,7 +42,7 @@
         name: "SkHeader",
         data() {
             return {
-                user:JSON.parse(sessionStorage.getItem('user')),
+                user:JSON.parse(localStorage.getItem('user')),
             }
         },
         create: function () {

@@ -2,6 +2,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store'
+import Cookies from "js-cookie";
 import Index from '@/views/Index'
 import Login from '@/views/Login'
 // import SysUser from '@/views/sysManage/sysUser/SysUser'
@@ -203,7 +204,8 @@ router.beforeEach((to, from, next) => {
 router.beforeEach((to, from, next) => {
     // 登录界面登录成功之后，会把用户信息保存在会话
     // 存在时间为会话生命周期，页面关闭即失效。
-    let user = sessionStorage.getItem('user')
+    // let user = sessionStorage.getItem('user')
+    let user = Cookies.get('X-Access-Token');
     if (to.path === '/login') {
         // 如果是访问登录界面，如果用户会话信息存在，代表已登录过，跳转到主页
         if(user) {

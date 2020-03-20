@@ -91,13 +91,13 @@ export default function $axios(options) {
             // let seconds = 10;
             Cookies.set('X-Access-Token', Cookies.get('X-Access-Token'), { expires: new Date(new Date() * 1 + minute * 1000) });// 放置token到Cookie
             // this.$store.commit('changeState')
-            break
+            break;
           case -14://token失效
             Cookies.remove('X-Access-Token');//从Cookie移除token
-            sessionStorage.removeItem('user')//从本地会话移除用户
+            // sessionStorage.removeItem('user')//从本地会话移除用户
             // 重定向到登录页面
             router.push('/login').catch(err => {err})
-            break
+            break;
           // console.log('登录成功')
         }
         if (data.code !== 0) {
