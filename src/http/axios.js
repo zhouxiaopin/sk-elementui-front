@@ -3,6 +3,7 @@ import config from './config';
 import Cookies from "js-cookie";
 import router from '@/router'
 import log from '@/utils/log'
+import * as Msg from '@/utils/msg'
 
 // 使用vuex做全局loading时使用
 // import store from '@/store'
@@ -95,17 +96,20 @@ export default function $axios(options) {
             Cookies.remove('X-Access-Token');//从Cookie移除token
             sessionStorage.removeItem('user')//从本地会话移除用户
             // 重定向到登录页面
-            window.console.log(data.msg)
             router.push('/login').catch(err => {err})
             break
           // console.log('登录成功')
+        }
+        if (data.code !== 0) {
+          window.console.log(data.msg)
+          Msg.error(data.msg);
         }
         // 若不是正确的返回code，且已经登录，就抛出错误
         // const err = new Error(data.desc)
         // err.data = data
         // err.response = response
         // throw err
-
+        // log.infoJson(`${response.config.url}请求返回数据：`,data);
         return data
       },
       err => {
@@ -157,6 +161,7 @@ export default function $axios(options) {
       resolve(res)
       return false
     }).catch(error => {
+      Msg.error(error);
       reject(error)
     })
   })

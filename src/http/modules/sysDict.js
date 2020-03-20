@@ -1,29 +1,30 @@
 import axios from '../axios'
 /*
-* 系统sql语句配置模块
+* 系统字典模块
 */
+
+export const queryByDictType = dictType => {
+    return axios({
+        url: 'sysDict/querySelectBoxVoByDictType',
+        method: 'post',
+        data:{
+            dictType
+        }
+    })
+};
 
 // 分页查询
 export const query = data => {
     return axios({
-        url: 'sysSqlConf/query',
+        url: 'sysDict/query',
         method: 'post',
         data
-    })
-};
-export const queryRealByScCode = scCode => {
-    return axios({
-        url: 'sysSqlConf/queryRealByScCode',
-        method: 'post',
-        data:{
-            scCode
-        }
     })
 };
 //添加
 export const add = data => {
     return axios({
-        url: 'sysSqlConf/add',
+        url: 'sysDict/add',
         method: 'post',
         data
     })
@@ -31,7 +32,7 @@ export const add = data => {
 //根据id获取记录
 export const getEntity = data => {
     return axios({
-        url: 'sysSqlConf/getEntity',
+        url: 'sysDict/getEntity',
         method: 'post',
         data
     })
@@ -39,7 +40,7 @@ export const getEntity = data => {
 //更新
 export const update = data => {
     return axios({
-        url: 'sysSqlConf/update',
+        url: 'sysDict/update',
         method: 'post',
         data
     })
@@ -47,7 +48,7 @@ export const update = data => {
 //删除
 export const del = data => {
     return axios({
-        url: 'sysSqlConf/delete',
+        url: 'sysDict/delete',
         method: 'post',
         data
     })
@@ -55,7 +56,7 @@ export const del = data => {
 //硬删除
 export const realDel = data => {
     return axios({
-        url: 'sysSqlConf/realDelete',
+        url: 'sysDict/realDelete',
         method: 'post',
         data
     })
@@ -63,8 +64,9 @@ export const realDel = data => {
 //更新记录状态
 export const updateRecordStatus = data => {
     return axios({
-        url: 'sysSqlConf/updateRecordStatus',
+        url: 'sysDict/updateRecordStatus',
         method: 'post',
         data
     })
 };
+

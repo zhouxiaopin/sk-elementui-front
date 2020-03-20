@@ -7,7 +7,7 @@
                 <p class="font-18">SK后台管理系统</p>
                 <el-form :model="loginForm" status-icon :rules="loginRules" ref="loginForm" label-width="auto">
                     <el-form-item label="用户名" prop="userName">
-                        <el-input type="text" v-model="loginForm.userName" auto-complete="off" placeholder="请输入用户名"></el-input>
+                        <el-input type="text" v-model="loginForm.userName" placeholder="请输入用户名"></el-input>
                     </el-form-item>
                     <el-form-item label="密码" prop="password">
                         <el-input type="password" v-model="loginForm.password" auto-complete="off" placeholder="请输入密码"></el-input>
@@ -127,14 +127,9 @@
                     spinner: 'el-icon-loading',
                     background: 'rgba(0, 0, 0, 0.7)'
                 });
-                this.$api.login.login(this.loginForm).then((res) => {
+                this.$api.Login.login(this.loginForm).then((res) => {
                     this.log.debug(res.data)
-                    if (res.code !== 0) {
-                        this.$message({
-                            message: res.msg,
-                            type: 'error'
-                        })
-                    } else {
+                    if (res.code === 0) {
                         // let seconds = 10;
                         // let minute = 60*;
                         // let expires = new Date(new Date() * 1 + seconds * 1000);
@@ -142,15 +137,10 @@
                         Cookies.set('X-Access-Token', res.data.token, { expires: new Date(res.data.expiresTime) });// 放置token到Cookie
 
                         sessionStorage.setItem('user', JSON.stringify(res.data.user));// 保存用户到本地会话
-                        // this.$store.commit('menuRouteLoaded', false) // 要求重新加载导航菜单
+                        this.$store.commit('menuRouteLoaded', false) // 要求重新加载导航菜单
                         this.$router.replace('/').catch(err => {err})  // 登录成功，跳转到主页
                     }
                     // this.loading = false
-                }).catch((res) => {
-                    this.$message({
-                        message: res.message,
-                        type: 'error'
-                    })
                 });
                 // this.changeVerifCode();
                 loading.close();

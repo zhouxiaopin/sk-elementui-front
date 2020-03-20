@@ -9,12 +9,14 @@ Vue.use(Vuex);
 import app from './modules/app'
 import navMenu from './modules/navMenu'
 import tabs from './modules/tabs'
+import user from './modules/user'
 
 const store = new Vuex.Store({
     modules:{
         app,
         navMenu,
         tabs,
+        user,
     },
 });
 

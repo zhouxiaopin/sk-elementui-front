@@ -15,6 +15,16 @@ export const logLevelObj={
 export const dateObj={
     defaulDateFormat: 'YYYY-MM-DD HH:mm:ss',
 };
+export const DEFAULT_SPLIT_SYMBOL=';';
+
+export const RecordStatus={
+    DELETE : "00",//记录删除
+    ABLE : "01",//记录可用
+    DISABLE : "02",//记录禁用
+}
+
+
+
 // export default {
 //     config,
 //     baseUrl,

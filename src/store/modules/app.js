@@ -10,6 +10,7 @@ export default {
         // themeColor: "#1890FF",  // 主题颜色
         themeColor: "#19A97B",  // 主题颜色
         isCollapse:false,  // 菜单栏是否折叠
+        menuRouteLoaded:false    // 菜单和路由是否已经加载
     },
     getters: {
         collapse(state){// 对应着上面state
@@ -25,6 +26,9 @@ export default {
         switchCollapse(state){  // 改变收缩状态
             state.isCollapse = !state.isCollapse
         },
+        menuRouteLoaded(state, menuRouteLoaded){  // 改变菜单和路由的加载状态
+            state.menuRouteLoaded = menuRouteLoaded;
+        }
     },
     /*
     * actions跟mutations差不多，但是action不直接修改state，它是提交到mutation上让mutation来

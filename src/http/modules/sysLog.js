@@ -11,3 +11,20 @@ export const query = data => {
         data
     })
 };
+//删除
+export const del = data => {
+    return axios({
+        url: 'sysLog/delete',
+        method: 'post',
+        data
+    })
+};
+//硬删除
+export const realDel = data => {
+    return axios({
+        url: 'sysLog/realDelete',
+        method: 'post',
+        data
+    })
+};
+

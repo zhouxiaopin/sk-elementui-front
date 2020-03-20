@@ -69,7 +69,7 @@
             }
         },
         mounted: function () {
-            this.requestMenu();
+            // this.requestMenu();
             // this.selectMenu(this.menuData2.find( item=> item.menuName=='首页').routePath);
         },
         methods: {
@@ -93,7 +93,7 @@
                 let curMenu = this.sysMenu.find( item=> item.routePath==index);
                 // let menuId = curMenu.routePath;
                 this.$store.commit('addTab',{
-                    title: curMenu.rName,
+                    title: curMenu.resName,
                     name: curMenu.routePath,
                     routeComponent: curMenu.routeComponent,
                     content: 'New Tab content',
@@ -102,7 +102,7 @@
                 this.$store.commit('setTabsValue',curMenu.routePath);
             },
             requestMenu(){
-                this.$api.sysResource.querySysMenu().then((res) => {
+                this.$api.SysResource.querySysMenu().then((res) => {
                     // this.log.debug(JSON.stringify(res.data.sysMenu));
                     if(res.code === 0) {
                         let sysMenu = res.data.sysMenu;

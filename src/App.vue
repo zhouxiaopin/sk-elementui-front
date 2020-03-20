@@ -140,9 +140,9 @@ $themeColor: #19A97B;
         }
 
         /*表格表头和内容文字居中*/
-        .el-table td, .el-table th {
-            text-align: center;
-        }
+        /*.el-table td, .el-table th {*/
+        /*    text-align: center;*/
+        /*}*/
     }
 
 </style>

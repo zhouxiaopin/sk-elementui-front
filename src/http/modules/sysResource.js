@@ -28,11 +28,51 @@ export const query = data => {
         data
     })
 }
-// 查询系统资源树
-// export const querySysResourceTree = data => {
-//     return axios({
-//         url: 'sysResource/querySysResourceTree',
-//         method: 'post',
-//         data
-//     })
-// }
+//添加
+export const add = data => {
+    return axios({
+        url: 'sysResource/add',
+        method: 'post',
+        data
+    })
+};
+//根据id获取记录
+export const getEntity = data => {
+    return axios({
+        url: 'sysResource/getEntity',
+        method: 'post',
+        data
+    })
+};
+//更新
+export const update = data => {
+    return axios({
+        url: 'sysResource/update',
+        method: 'post',
+        data
+    })
+};
+//删除
+export const del = data => {
+    return axios({
+        url: 'sysResource/delete',
+        method: 'post',
+        data
+    })
+};
+//硬删除
+export const realDel = data => {
+    return axios({
+        url: 'sysResource/realDelete',
+        method: 'post',
+        data
+    })
+};
+//更新记录状态
+export const updateRecordStatus = data => {
+    return axios({
+        url: 'sysResource/updateRecordStatus',
+        method: 'post',
+        data
+    })
+};
