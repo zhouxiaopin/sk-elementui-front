@@ -5,6 +5,8 @@
         <!--按钮区域-->
         <sk-btn-opt-bar :idKey="idKey" :data="btnOptBarData" :checkedData="checkedData"
                         :apiModelName="apiModelName" @reloadData="requestQuery">
+            <sk-btn type="primary" icon="download"
+                    @click="onDownImportTemp" :permis="sysUserPermis.DOWN_IMPORT_TEMP">下载导入模板</sk-btn>
         </sk-btn-opt-bar>
         <!--表格-->
         <sk-table :idKey="idKey" :columns="columns" :data="tableData" :loading="loading"
@@ -21,6 +23,7 @@
 </template>
 
 <script>
+    /*eslint-disable*/
     import {PermisConf} from '@/config/permisCofig'
 
     import Add from './Add'
@@ -74,6 +77,7 @@
                 //按钮操作栏数据
                 btnOptBarData:[
                     {lable:'添加',icon:'plus',permis:PermisConf.ADD,clickHand:this.addHandler},
+                    {isSlot:true},
                     {lable:'批量删除',icon:'delete',permis:PermisConf.BATCH_DEL,handlerName:'batchDel',type:'warning'},
                     {lable:'批量硬删除',icon:'delete',permis:PermisConf.BATCH_REAL_DEL,handlerName:'batchRealDel',type:'danger'},
                 ],
@@ -107,6 +111,13 @@
         },
         computed:{
             apiModelName:()=>API_MODEL_NAME,
+            sysUserPermis:()=>{
+                let sup = {};
+                for (let key in PermisConf){
+                    sup[key] = PERM_PREFIX + PermisConf[key];
+                }
+                return sup;
+            },
         },
         methods: {
             //添加
@@ -122,6 +133,43 @@
             updatePswHandler(row){
                 this.uptPswConf.visible = true;
                 this.uptPswConf.checkedData = row;
+            },
+            //下载导入模板
+            onDownImportTemp(){
+                this.$api.SysUser.downImportTemp().then(res => {
+                    // debugger
+                    if (res.code === 0){
+                        let data = res.data;
+                        // let blob = new Blob([data.blob],{
+                        //     type:'application/vnd.ms-excel'      //将会被放入到blob中的数组内容的MIME类型
+                        // });
+                        // let objectUrl = URL.createObjectURL(blob);  //生成一个url
+                        // window.location.href = objectUrl;   //浏览器打开这个url
+                        //
+                        //
+                        let url = window.URL.createObjectURL(new Blob([data.blob]))
+                        let a = document.createElement('a')
+                        a.style.display = 'none';
+                        a.href = url;
+                        a.setAttribute('download',data.fileName);
+                        document.body.appendChild(a)
+                        //点击下载
+                        a.click();
+                        // 下载完成移除元素
+                        document.body.removeChild(a);
+                        // 释放掉blob对象
+                        window.URL.revokeObjectURL(url);
+                        window.console.log("下载完成");
+                    }
+
+                    //
+                    // data['code'] == 0;
+                    // data['data'] == response.data;
+                    // let contentDisposition = response.headers['content-disposition'];
+                    // let fileName = contentDisposition.substring(contentDisposition.indexOf('=')+1);
+                    // data['fileName'] == fileName;
+
+                });
             },
             checkChange(val){
                 this.checkedData = val;

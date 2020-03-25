@@ -162,14 +162,17 @@
             refreshData(queryCondition){
                 this.queryCondition = queryCondition;
                 this.requestQuery();
+                // this.$refs.navTree.refresh();
             },
             //请求查询
             requestQuery(key) {
+                // debugger
                 this.loading = true;
                 let queryCondition = this.queryCondition;
                 let cdtCustom = queryCondition.cdtCustom;
                 if (queryCondition.isParentQuery=='1') {
-                    cdtCustom.parentId = key?key:this.$refs.navTree.getCurrentKey();
+                    let ck = this.$refs.navTree.getCurrentKey();
+                    cdtCustom.parentId = ck?ck:key;
                 }else{
                     cdtCustom.parentId = null;
                 }

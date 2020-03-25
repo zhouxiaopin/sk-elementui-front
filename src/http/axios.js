@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import axios from 'axios';
 import config from './config';
 import Cookies from "js-cookie";
@@ -72,12 +73,25 @@ export default function $axios(options) {
     // response 拦截器
     instance.interceptors.response.use(
       response => {
+        // debugger
         let data;
         // IE9时response.data是undefined，因此需要使用response.request.responseText(Stringify后的字符串)
         if (response.data == undefined) {
           data = JSON.parse(response.request.responseText)
         } else {
           data = response.data
+        }
+        if (response.data&&data.code == undefined){
+          debugger
+          data = {};
+          data['code'] = 0;
+          let subData = {};
+          subData['blob'] = response.data;
+          let fileName = response.headers['location'];
+          // let fileName = contentDisposition.substring(contentDisposition.indexOf('=')+1);
+          subData['fileName'] = fileName;
+
+          data['data'] = subData;
         }
 
         // 根据返回的code值来做不同的处理
@@ -101,7 +115,7 @@ export default function $axios(options) {
           // console.log('登录成功')
         }
         if (data.code !== 0) {
-          window.console.log(data.msg)
+          window.console.log(data.msg);
           Msg.error(data.msg);
         }
         // 若不是正确的返回code，且已经登录，就抛出错误
@@ -156,6 +170,10 @@ export default function $axios(options) {
       }
     )
 
+    if(options.headers){
+      instance.headers = options.headers;
+    }
+
     // 请求处理
     instance(options).then(res => {
       resolve(res)
@@ -164,5 +182,6 @@ export default function $axios(options) {
       Msg.error(error);
       reject(error)
     })
+
   })
 }

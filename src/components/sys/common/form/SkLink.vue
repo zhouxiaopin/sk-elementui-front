@@ -1,14 +1,20 @@
 <template>
 <!--    <div class="SkLink"></div>-->
 
-    <el-link :class="clazz" :type="type" :icon="icon?'el-icon-'+icon:''" :title="title"
+    <el-link :href="skHref" :class="clazz" :type="type" :icon="icon?'el-icon-'+icon:''" :title="title"
              @click="handleClick" :disabled="!hasPerms(permis)">
         <span v-if="$slots.default"><slot></slot></span>
     </el-link>
+<!--    <el-link v-else :class="clazz" :type="type" :icon="icon?'el-icon-'+icon:''" :title="title"-->
+<!--             @click="handleClick" :disabled="!hasPerms(permis)">-->
+<!--        <span v-if="$slots.default"><slot></slot></span>-->
+<!--    </el-link>-->
 
 </template>
 
 <script>
+    /*eslint-disable*/
+    import { baseUrl } from '@/config/config'
     import {hasPermission} from '@/utils/permis'
     export default {
         name: "SkLink",
@@ -39,8 +45,21 @@
                 type: String,
                 required:false,
                 default: ''
+            },
+            href: {
+                type: String,
+                required:false,
+                default: null
             }
         },
+        data(){
+            return{
+                skHref:this.href?baseUrl+this.href:null
+            }
+        },
+        // computed:{
+        //     rHref:()=>this.href?baseUrl+this.href:null
+        // },
         methods: {
             handleClick: function (evt) {
                 // 按钮操作处理函数

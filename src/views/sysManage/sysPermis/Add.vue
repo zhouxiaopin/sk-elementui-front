@@ -4,24 +4,24 @@
             <el-form :model="dataForm" ref="form" :rules="dataRules" label-width="auto">
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="权限标识:" prop="pFlag">
+                        <el-form-item label="权限标识:" prop="perFlag">
                             <el-input v-model="dataForm.perFlag" auto-complete="off"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="权限名:" prop="pName">
+                        <el-form-item label="权限名:" prop="perName">
                             <el-input v-model="dataForm.perName" auto-complete="off"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="排序:" prop="pSort">
+                        <el-form-item label="排序:" prop="perSort">
                             <el-input v-model="dataForm.perSort" auto-complete="off"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="类型:" prop="pType">
+                        <el-form-item label="类型:" prop="perType">
                             <sk-select :value.sync="dataForm.perType" :dictType="SysPermisDict.MENU_TYPE"
                                        placeholder="请选择类型" />
                         </el-form-item>
@@ -35,7 +35,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="级别:" prop="pLevel">
+                        <el-form-item label="级别:" prop="perLevel">
                             <sk-select :value.sync="dataForm.perLevel" :dictType="SysPermisDict.MENU_LEVEL"
                                        placeholder="请选择级别" />
                         </el-form-item>

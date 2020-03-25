@@ -5,7 +5,7 @@
             <template v-for="(item,index) in data">
                 <slot v-if="item.isSlot&&$slots.default"></slot>
                 <sk-btn v-else :type="item.type||'primary'" :icon="item.icon"
-                        @click="item.clickHand?item.clickHand():commanHandler(item.handlerName)" :perms="item.permis" :key="index">{{item.lable}}</sk-btn>
+                        @click="item.clickHand?item.clickHand():commanHandler(item.handlerName)" :permis="item.permis" :key="index">{{item.lable}}</sk-btn>
             </template>
             <!--            <el-button type="success" icon="el-icon-edit-outline" @click="update" size="small">修改</el-button>-->
         </div>
@@ -96,7 +96,7 @@
             },
             //请求硬删除
             requestRealDel(ids) {
-                debugger
+                // debugger
                 let param = {ids:ids};
                 this.$api[this.apiModelName].realDel(param).then((res) => {
                     if (res.code === 0) {

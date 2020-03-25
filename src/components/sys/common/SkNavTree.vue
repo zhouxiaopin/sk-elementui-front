@@ -63,18 +63,19 @@
         },
         created() {
             // debugger
-            if (this.scCode){
-                this.requestQueryRealByScCode(this.scCode,data=>{
-                    this.data = data;
-                    let treeData = listToTree(this.props.value,this.props.parent,data);
-                    this.treeData = treeData;
-                    if (this.treeData&&this.treeData[0]){
-                        this.$emit('requestQuery',this.treeData[0][this.props.value]);
-                    }
-                });
-            }else{
-                this.msg.error(`${name}:配置出错`);
-            }
+            this.refresh();
+            // if (this.scCode){
+            //     this.requestQueryRealByScCode(this.scCode,data=>{
+            //         this.data = data;
+            //         let treeData = listToTree(this.props.value,this.props.parent,data);
+            //         this.treeData = treeData;
+            //         if (this.treeData&&this.treeData[0]){
+            //             this.$emit('requestQuery',this.treeData[0][this.props.value]);
+            //         }
+            //     });
+            // }else{
+            //     this.msg.error(`${name}:配置出错`);
+            // }
         },
         methods: {
             //请求查询sql配置
@@ -103,6 +104,22 @@
                 }
                 // this.log.debugJson('',data);
                 // this.log.debugJson('', Node);
+            },
+            //刷新数据
+            refresh(){
+                // debugger
+                if (this.scCode){
+                    this.requestQueryRealByScCode(this.scCode,data=>{
+                        this.data = data;
+                        let treeData = listToTree(this.props.value,this.props.parent,data);
+                        this.treeData = treeData;
+                        if (this.treeData&&this.treeData[0]){
+                            this.$emit('requestQuery',this.treeData[0][this.props.value]);
+                        }
+                    });
+                }else{
+                    this.msg.error(`${name}:配置出错`);
+                }
             },
         }
     }

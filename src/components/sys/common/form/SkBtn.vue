@@ -1,7 +1,7 @@
 <template>
 <!--    <div class="SkBtn"></div>-->
     <el-button :type="type" :icon="icon?'el-icon-'+icon:''" @click="handleClick" :size="size"
-               :disabled="!hasPerms(perms)">
+               :disabled="!hasPerms(permis)">
 <!--        {{label}}}-->
         <span v-if="$slots.default"><slot></slot></span>
     </el-button>
@@ -36,7 +36,7 @@
                 type: Boolean,
                 default: false
             },
-            perms: {  // 按钮权限标识，外部使用者传入
+            permis: {  // 按钮权限标识，外部使用者传入
                 type: String,
                 required:false,
                 default: ''
@@ -47,9 +47,9 @@
                 // 按钮操作处理函数
                 this.$emit('click', evt);
             },
-            hasPerms: function (perms) {
+            hasPerms: function (permis) {
                 // 根据权限标识和外部指示状态进行权限判断
-                return hasPermission(perms) && !this.disabled
+                return hasPermission(permis) && !this.disabled
             }
         }
     }

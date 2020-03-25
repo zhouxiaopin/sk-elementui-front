@@ -69,3 +69,12 @@ export const updateRecordStatus = data => {
         data
     })
 };
+//下载导入模板
+export const downImportTemp = () => {
+    return axios({
+        url: 'sysUser/downImportTemp',
+        method: 'get',
+        responseType:'blob'      //告诉服务器我们需要的响应格式
+    })
+
+};
