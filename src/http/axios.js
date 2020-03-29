@@ -82,12 +82,12 @@ export default function $axios(options) {
           data = response.data
         }
         if (response.data&&data.code == undefined){
-          debugger
+          // debugger
           data = {};
           data['code'] = 0;
           let subData = {};
           subData['blob'] = response.data;
-          let fileName = response.headers['location'];
+          let fileName = decodeURIComponent(response.headers['filename']);
           // let fileName = contentDisposition.substring(contentDisposition.indexOf('=')+1);
           subData['fileName'] = fileName;
 

@@ -13,6 +13,7 @@
                 :border=true
                 :stripe=true
                 @selection-change="checkChange"
+                header-row-class-name="tableHeader"
                 class="wp-100">
             <el-table-column
                     type="selection" header-align="center" align="center"

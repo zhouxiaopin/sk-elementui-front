@@ -7,6 +7,10 @@
                         :apiModelName="apiModelName" @reloadData="requestQuery">
             <sk-btn type="primary" icon="download"
                     @click="onDownImportTemp" :permis="sysUserPermis.DOWN_IMPORT_TEMP">下载导入模板</sk-btn>
+            <sk-btn type="success" icon="download"
+                    @click="onDataExport" :permis="sysUserPermis.EXPORT_DATA">导出数据</sk-btn>
+            <sk-btn type="success" icon="upload2"
+                    @click="onBatchImport" :permis="sysUserPermis.BATCH_IMPORT">批量导入</sk-btn>
         </sk-btn-opt-bar>
         <!--表格-->
         <sk-table :idKey="idKey" :columns="columns" :data="tableData" :loading="loading"
@@ -19,6 +23,8 @@
         <update :conf="uptConf" :refreshData="requestQuery" @close="visible => this.uptConf.visible = visible"/>
         <!--修改密码-->
         <UpdatePsw :conf="uptPswConf" :refreshData="requestQuery" @close="visible => this.uptPswConf.visible = visible"/>
+        <!--批量导入-->
+        <BatchImport :conf="batchImporConf" :refreshData="requestQuery" @close="visible => this.batchImporConf.visible = visible"/>
     </div>
 </template>
 
@@ -29,6 +35,7 @@
     import Add from './Add'
     import Update from './Update'
     import UpdatePsw from './UpdatePsw'
+    import BatchImport from './BatchImport'
     //主键名
     const idKey = 'userId';
     //权限前缀
@@ -40,7 +47,8 @@
         components:{
             Add,
             Update,
-            UpdatePsw
+            UpdatePsw,
+            BatchImport
         },
         data(){
             return{
@@ -59,6 +67,10 @@
                     visible:false,
                     idKey:idKey,
                     checkedData:null
+                },
+                batchImporConf:{
+                    visible:false,
+                    idKey:idKey
                 },
                 queryCondition:{
                     start:0,//当前第几页
@@ -170,6 +182,47 @@
                     // data['fileName'] == fileName;
 
                 });
+            },
+            //导出数据
+            onDataExport(){
+                this.$api.SysUser.dataExport(this.queryCondition).then(res => {
+                    // debugger
+                    if (res.code === 0){
+                        let data = res.data;
+                        // let blob = new Blob([data.blob],{
+                        //     type:'application/vnd.ms-excel'      //将会被放入到blob中的数组内容的MIME类型
+                        // });
+                        // let objectUrl = URL.createObjectURL(blob);  //生成一个url
+                        // window.location.href = objectUrl;   //浏览器打开这个url
+                        //
+                        //
+                        let url = window.URL.createObjectURL(new Blob([data.blob]))
+                        let a = document.createElement('a')
+                        a.style.display = 'none';
+                        a.href = url;
+                        a.setAttribute('download',data.fileName);
+                        document.body.appendChild(a)
+                        //点击下载
+                        a.click();
+                        // 下载完成移除元素
+                        document.body.removeChild(a);
+                        // 释放掉blob对象
+                        window.URL.revokeObjectURL(url);
+                        window.console.log("下载完成");
+                    }
+
+                    //
+                    // data['code'] == 0;
+                    // data['data'] == response.data;
+                    // let contentDisposition = response.headers['content-disposition'];
+                    // let fileName = contentDisposition.substring(contentDisposition.indexOf('=')+1);
+                    // data['fileName'] == fileName;
+
+                });
+            },
+            //批量导入
+            onBatchImport(){
+                this.batchImporConf.visible = true;
             },
             checkChange(val){
                 this.checkedData = val;

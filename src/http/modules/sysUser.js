@@ -78,3 +78,26 @@ export const downImportTemp = () => {
     })
 
 };
+//导出数据
+export const dataExport = data => {
+    return axios({
+        url: 'sysUser/export',
+        method: 'post',
+        data,
+        responseType:'blob'      //告诉服务器我们需要的响应格式
+    })
+
+};
+//批量导入
+export const batchImport = (data,onUpldProg) => {
+    return axios({
+        url: 'sysUser/batchImport',
+        headers: {
+            'Content-Type': 'multipart/form-data;charset=UTF-8'
+        },
+        method: 'post',
+        onUploadProgress:onUpldProg,
+        data,
+    })
+
+};

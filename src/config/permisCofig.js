@@ -17,4 +17,8 @@ export const PermisConf = {
     BATCH_REAL_DEL:'batchRealDel',
     //下载导入模板
     DOWN_IMPORT_TEMP:'downImportTemp',
+    //导出数据
+    EXPORT_DATA: "exportData",
+    //批量导入
+    BATCH_IMPORT: "batchImport"
 };

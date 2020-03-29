@@ -45,7 +45,15 @@ body::-webkit-scrollbar-thumb,.scrollbar::-webkit-scrollbar-thumb,.minScrollbar:
     background: #CDCDCD;
 } /* 滑块颜色 */
 
+/*颜色相关*/
 $themeColor: #19A97B;
+$SuccessColor: #67C23A;
+$WarningColor: #E6A23C;
+$DangerColor: #F56C6C;
+$InfoColor: #909399;
+
+
+
     body{
         margin: 0;
         padding: 0;
@@ -102,6 +110,8 @@ $themeColor: #19A97B;
         .whp-100{width: 100%;height: 100%}
         .fr{float: right}
 
+
+        /*字体大小*/
         .font-10{
             font-size: 10px;
         }
@@ -111,6 +121,32 @@ $themeColor: #19A97B;
         .font-20{
             font-size: 20px;
         }
+        /*字体颜色*/
+        .sucColor{
+            color: $SuccessColor;
+        }
+        .warColor{
+            color: $WarningColor;
+        }
+        .danColor{
+            color: $DangerColor;
+        }
+        .infColor{
+            color: $InfoColor;
+        }
+
+        .tableHeader{
+            color: #000000;
+            /*background-color: $$SuccessColor !important;*/
+            th{
+                /*background-color: #AEDD81 !important;*/
+                /*background-color: #84AF9B !important;*/
+                background-color: #D0D0D0 !important;
+                /*background-color: #C6E2FF !important;*/
+            }
+        }
+
+
 
         /*背景色*/
         .bgc-f0f2f5{
