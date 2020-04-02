@@ -4,6 +4,7 @@ import config from './config';
 import Cookies from "js-cookie";
 import router from '@/router'
 import log from '@/utils/log'
+import {KeyName} from '@/config/config'
 import * as Msg from '@/utils/msg'
 
 // 使用vuex做全局loading时使用
@@ -21,13 +22,13 @@ export default function $axios(options) {
     // request 拦截器
     instance.interceptors.request.use(
       config => {
-        let token = Cookies.get('X-Access-Token')
+        let token = Cookies.get(KeyName.TOKEN)
         // 1. 请求开始的时候可以结合 vuex 开启全屏 loading 动画
         // console.log(store.state.loading)
         // console.log('准备发送请求...')
         // 2. 带上token
         if (token) {
-          config.headers['X-Access-Token'] = token
+          config.headers[KeyName.TOKEN] = token
         } else {
           // 重定向到登录页面
           router.push('/login').catch(err => {err})
@@ -103,11 +104,11 @@ export default function $axios(options) {
           case 0:
             //更新token过期时间
             // let seconds = 10;
-            Cookies.set('X-Access-Token', Cookies.get('X-Access-Token'), { expires: new Date(new Date() * 1 + minute * 1000) });// 放置token到Cookie
+            Cookies.set(KeyName.TOKEN, Cookies.get(KeyName.TOKEN), { expires: new Date(new Date() * 1 + minute * 1000) });// 放置token到Cookie
             // this.$store.commit('changeState')
             break;
           case -14://token失效
-            Cookies.remove('X-Access-Token');//从Cookie移除token
+            Cookies.remove(KeyName.TOKEN);//从Cookie移除token
             // sessionStorage.removeItem('user')//从本地会话移除用户
             // 重定向到登录页面
             router.push('/login').catch(err => {err})

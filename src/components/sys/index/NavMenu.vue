@@ -81,8 +81,10 @@
             // index: 选中菜单项的 index, indexPath: 选中菜单项的 index path
             selectMenu(index, indexPath) {
                 this.log.debug('index:'+index+',indexPath:'+indexPath);
+
                 let hasMenu = this.tabsData.find( item=> item.name==index);
                 if (hasMenu){
+                    // this.$store.commit('removeTab',hasMenu.name);
                     this.$store.commit('setTabsValue',hasMenu.name);
                     if (this.$route.path != hasMenu.name){
                         this.$router.replace(hasMenu.name).catch(err => {err});
@@ -101,38 +103,38 @@
                 });
                 this.$store.commit('setTabsValue',curMenu.routePath);
             },
-            requestMenu(){
-                this.$api.SysResource.querySysMenu().then((res) => {
-                    // this.log.debug(JSON.stringify(res.data.sysMenu));
-                    if(res.code === 0) {
-                        let sysMenu = res.data.sysMenu;
-                        let treeSysMenu = res.data.treeSysMenu[0].children;
-                        // let treeSysMenu = res.data.treeSysMenu[0].children;
-                        let homeItem = {"routePath":"/","routeComponent":'Home',"routeName":'Home',
-                            "rType":"01","rLevel":2,"rName":"首页","leftIcon":"fa fa-address-book","rId":-1,"rSort":null,"parentId":null,"close":true};
-                        let treeHomeItem =  {"id":"-1","name":"首页","parentId":null,"order":null,
-                            "level":0,"attrs":{"routePath":'/',"routeComponent":'Home',"leftIcon":'fa fa-home fa-lg',"close":true,
-                                "routeName":'Home'},"children":null};
-                        sysMenu.unshift(homeItem);
-                        treeSysMenu.unshift(treeHomeItem);
-                        // this.log.debug(JSON.stringify(treeSysMenu));
-                        this.$store.commit('setSysMenu',sysMenu);
-                        this.$store.commit('setTreeSysMenu',treeSysMenu);
-
-                    } else {
-                        this.$message({
-                            message: res.msg,
-                            type: 'error'
-                        })
-                    }
-                    // this.loading = false
-                }).catch((res) => {
-                    this.$message({
-                        message: res.message,
-                        type: 'error'
-                    })
-                });
-            }
+            // requestMenu(){
+            //     this.$api.SysResource.querySysMenu().then((res) => {
+            //         // this.log.debug(JSON.stringify(res.data.sysMenu));
+            //         if(res.code === 0) {
+            //             let sysMenu = res.data.sysMenu;
+            //             let treeSysMenu = res.data.treeSysMenu[0].children;
+            //             // let treeSysMenu = res.data.treeSysMenu[0].children;
+            //             let homeItem = {"routePath":"/","routeComponent":'Home',"routeName":'Home',
+            //                 "rType":"01","rLevel":2,"rName":"首页","leftIcon":"fa fa-address-book","rId":-1,"rSort":null,"parentId":null,"close":true};
+            //             let treeHomeItem =  {"id":"-1","name":"首页","parentId":null,"order":null,
+            //                 "level":0,"attrs":{"routePath":'/',"routeComponent":'Home',"leftIcon":'fa fa-home fa-lg',"close":true,
+            //                     "routeName":'Home'},"children":null};
+            //             sysMenu.unshift(homeItem);
+            //             treeSysMenu.unshift(treeHomeItem);
+            //             // this.log.debug(JSON.stringify(treeSysMenu));
+            //             this.$store.commit('setSysMenu',sysMenu);
+            //             this.$store.commit('setTreeSysMenu',treeSysMenu);
+            //
+            //         } else {
+            //             this.$message({
+            //                 message: res.msg,
+            //                 type: 'error'
+            //             })
+            //         }
+            //         // this.loading = false
+            //     }).catch((res) => {
+            //         this.$message({
+            //             message: res.message,
+            //             type: 'error'
+            //         })
+            //     });
+            // }
         },
         computed:{
             ...mapState({

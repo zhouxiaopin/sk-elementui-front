@@ -4,6 +4,12 @@ export const config = {
 
 
 };
+export const KeyName = {
+    //用户信息
+    USER:'sysUser',
+    TOKEN:'X-Access-Token',
+
+};
 // 后台管理系统服务器地址
 export const baseUrl = 'http://localhost:8083/sk/'
 export const logLevelObj={

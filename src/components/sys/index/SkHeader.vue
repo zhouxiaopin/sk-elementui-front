@@ -27,22 +27,46 @@
                     <el-dropdown-item command="logout"><i class="el-icon-circle-close"></i>&nbsp;&nbsp;退出系统&nbsp;&nbsp;
                     </el-dropdown-item>
                 </el-dropdown-menu>
-
+                <!--修改密码-->
+                <UpdatePsw :conf="uptPswConf" :refreshData="()=>{}" @close="visible => this.uptPswConf.visible = visible"/>
+                <!--个人信息-->
+                <PersonInfo :conf="persInfoConf" @close="visible => this.persInfoConf.visible = visible"/>
             </el-dropdown>
 
         </section>
+
     </el-header>
+
+
 </template>
 
 <script>
     import {mapState} from 'vuex'
+    import {KeyName} from '@/config/config'
     import Cookies from "js-cookie";
     import Screenfull from 'screenfull'
+    import UpdatePsw from '@/views/sysManage/sysUser/UpdatePsw'
+    import PersonInfo from '@/views/sysManage/sysUser/PersonInfo'
+
+    //主键名
+    const idKey = 'userId';
     export default {
         name: "SkHeader",
+        components:{
+            UpdatePsw,
+            PersonInfo
+        },
         data() {
             return {
-                user:JSON.parse(localStorage.getItem('user')),
+                user:JSON.parse(localStorage.getItem(KeyName.USER)),
+                uptPswConf:{
+                    visible:false,
+                    idKey:idKey,
+                    checkedData:JSON.parse(localStorage.getItem(KeyName.USER))
+                },
+                persInfoConf:{
+                    visible:false
+                },
             }
         },
         create: function () {
@@ -56,37 +80,19 @@
             handleCommand(command) {
                 switch (command) {
                     case 'personInfo':
+                        this.persInfoConf.visible = true;
                         break;
                     case 'updPsw':
-                        this.$api.sysUser.query({sysUserCustom:{'userName':'zhoucp'},
-                            'draw':'1'}).then((res) => {
-                            this.log.debug(res);
-                            if(res.code !== 0) {
-                                this.$message({
-                                    message: res.msg,
-                                    type: 'error'
-                                })
-                            } else {
-                                // Cookies.remove('token');//从Cookie移除token
-                                // sessionStorage.removeItem('userName')//从本地会话移除用户
-                                // // this.$store.commit('menuRouteLoaded', false) // 要求重新加载导航菜单
-                                // this.$router.replace('/login').catch(err => {err})  // 登录成功，跳转到主页
-                            }
-                            // this.loading = false
-                        }).catch((res) => {
-                            this.$message({
-                                message: res.message,
-                                type: 'error'
-                            })
-                        });
+                        this.uptPswConf.visible = true;
                         break;
                     case 'logout':
                         this.$api.Login.logout().then((res) => {
                             this.log.debug(JSON.stringify(res))
                             if(res.code === 0) {
-                                Cookies.remove('X-Access-Token');//从Cookie移除token
+                                Cookies.remove(KeyName.TOKEN);//从Cookie移除token
                                 // sessionStorage.removeItem('user')//从本地会话移除用户
-                                sessionStorage.clear();
+                                localStorage.clear();
+                                // sessionStorage.clear();
                                 // this.$store.commit('menuRouteLoaded', false) // 要求重新加载导航菜单
                                 this.$router.replace('/login').catch(err => {err})  // 登录成功，跳转到主页
                             }

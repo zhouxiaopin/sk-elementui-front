@@ -9,6 +9,7 @@ export default {
         headerWelcome: "欢迎进入sk学习系统",  // 头部欢迎语
         // themeColor: "#1890FF",  // 主题颜色
         themeColor: "#19A97B",  // 主题颜色
+        // themeColor: "#F56C6C",  // 主题颜色
         isCollapse:false,  // 菜单栏是否折叠
         menuRouteLoaded:false    // 菜单和路由是否已经加载
     },

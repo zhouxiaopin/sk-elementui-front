@@ -96,7 +96,7 @@
                 //表格列数据
                 columns: [
                     {prop:"userName", label:"用户名"},
-                    {prop:"sex", label:"性别"},
+                    {prop:"sexStr", label:"性别"},
                     {prop:"mobilePhone", label:"手机"},
                     {prop:"email", label:"邮箱"},
                     {prop:"createTime", label:"创建时间", colType:'time'},

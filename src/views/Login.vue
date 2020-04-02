@@ -29,6 +29,7 @@
 <script>
     import { mapState } from 'vuex'
     import {drawPic} from '@/utils/verifCode'
+    import {KeyName} from '@/config/config'
     import Cookies from "js-cookie";
     export default {
         name: "Login",
@@ -134,10 +135,10 @@
                         // let minute = 60*;
                         // let expires = new Date(new Date() * 1 + seconds * 1000);
 
-                        Cookies.set('X-Access-Token', res.data.token, { expires: new Date(res.data.expiresTime) });// 放置token到Cookie
+                        Cookies.set(KeyName.TOKEN, res.data.token, { expires: new Date(res.data.expiresTime) });// 放置token到Cookie
 
                         // sessionStorage.setItem('user', JSON.stringify(res.data.user));// 保存用户到本地会话
-                        localStorage.setItem('user', JSON.stringify(res.data.user));// 保存用户到本地会话
+                        localStorage.setItem(KeyName.USER, JSON.stringify(res.data.user));// 保存用户到本地会话
                         this.$store.commit('menuRouteLoaded', false) // 要求重新加载导航菜单
                         this.$router.replace('/').catch(err => {err})  // 登录成功，跳转到主页
                     }
