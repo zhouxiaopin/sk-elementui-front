@@ -87,7 +87,8 @@
                         break;
                     case 'logout':
                         this.$api.Login.logout().then((res) => {
-                            this.log.debug(JSON.stringify(res))
+                            // this.log.debug(JSON.stringify(res))
+                            window.console.debug(JSON.stringify(res))
                             if(res.code === 0) {
                                 Cookies.remove(KeyName.TOKEN);//从Cookie移除token
                                 // sessionStorage.removeItem('user')//从本地会话移除用户

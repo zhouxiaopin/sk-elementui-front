@@ -23,7 +23,7 @@ const router = new Router({
     routes:[
         {
             path:'/',
-            name:'index',
+            // name:'index',
             // component:Index,
             component:Index,
             meta:{
@@ -32,7 +32,7 @@ const router = new Router({
             children:[
                     {
                         path:'/',
-                        name:'Home',
+                        // name:'Home',
                         // component:Home,
                         components:{Home},
                         // meta:{
@@ -125,7 +125,7 @@ const router = new Router({
         },
         {
             path:'/login',
-            name:'login',
+            // name:'login',
             component:Login,
             meta:{
                 title: '登录'

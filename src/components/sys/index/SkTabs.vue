@@ -5,7 +5,7 @@
             <el-tab-pane
 
                     v-for="(item, index) in tabsData"
-                    :key="index"
+                    :key="index+item.name"
                     :label="item.title"
                     :name="item.name"
                     :closable="item.close"

@@ -13,7 +13,6 @@ import '@/assets/iconfont/iconfont.css'
 
 //模拟数据
 import './mock'
-import log from './utils/log'
 import * as msg from './utils/msg'
 
 
@@ -30,7 +29,6 @@ Vue.config.devtools = true
 //生产
 // Vue.config.devtools = false
 
-Vue.prototype.log = log
 Vue.prototype.msg = msg
 
 

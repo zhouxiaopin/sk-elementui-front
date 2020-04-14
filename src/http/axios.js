@@ -3,7 +3,6 @@ import axios from 'axios';
 import config from './config';
 import Cookies from "js-cookie";
 import router from '@/router'
-import log from '@/utils/log'
 import {KeyName} from '@/config/config'
 import * as Msg from '@/utils/msg'
 
@@ -45,7 +44,7 @@ export default function $axios(options) {
           // config.data = qs.stringify(config.data)
           // }
         }
-        log.infoJson('请求参数：',config.data);
+        window.console.log('请求参数：',JSON.stringify(config.data))
         return config
       },
 
@@ -124,6 +123,7 @@ export default function $axios(options) {
         // err.data = data
         // err.response = response
         // throw err
+        window.console.log(`${response.config.url}请求返回数据：`,data);
         // log.infoJson(`${response.config.url}请求返回数据：`,data);
         return data
       },

@@ -12,9 +12,10 @@
                     <el-form-item label="密码" prop="password">
                         <el-input type="password" v-model="loginForm.password" auto-complete="off" placeholder="请输入密码"></el-input>
                     </el-form-item>
-                    <el-form-item label="验证码" prop="verifCode">
-                        <el-input type="text" v-model="loginForm.verifCode" auto-complete="off" placeholder="请输入验证码" style="width: 65%;margin-right: 10px"></el-input>
-                        <canvas ref="verifCodeCanvas" @click.stop="changeVerifCode()" width="90px" height="40px" style="vertical-align:middle">浏览器不支持</canvas>
+                    <el-form-item label="验证码" prop="verifyCode">
+                        <el-input type="text" v-model="loginForm.verifyCode" auto-complete="off" placeholder="请输入验证码" style="width: 65%;margin-right: 10px"></el-input>
+                        <img :src="vcImgSrc" class="vcImg" @click="onVcImgClick()">
+<!--                        <canvas ref="verifyCodeCanvas" @click.stop="changeverifyCode()" width="90px" height="40px" style="vertical-align:middle">浏览器不支持</canvas>-->
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click.native.prevent="submitForm('loginForm')">提交</el-button>
@@ -27,8 +28,10 @@
 </template>
 
 <script>
+    /*eslint-disable*/
     import { mapState } from 'vuex'
-    import {drawPic} from '@/utils/verifCode'
+    // import {drawPic} from '@/utils/verifyCode'
+    import {uuid} from '@/utils/uuid'
     import {KeyName} from '@/config/config'
     import Cookies from "js-cookie";
     export default {
@@ -57,12 +60,15 @@
             };
             return {
                 //当前验证码
-                curVerifCode:'',
+                // curverifyCode:'',
+                initVcImgSrc:this.$api.Login.getVerifyCodeUrl+'?uuid=',
+                vcImgSrc:null,
                 //登录表单
                 loginForm: {
                     userName: '',
                     password: '',
-                    verifCode: '',
+                    verifyCode: '',
+                    verifyCodeKey:uuid(),
                 },
                 //登录校验规则
                 loginRules: {
@@ -72,7 +78,7 @@
                     password: [
                         { validator: validatePsw, trigger: 'blur' }
                     ],
-                    verifCode: [
+                    verifyCode: [
                         { validator: validateVerify, trigger: 'blur' }
                     ]
 
@@ -85,22 +91,30 @@
             if (this.sysMenu){
                 window.location.reload();
             }
+            // debugger
+            this.initVcImgSrc += this.loginForm.verifyCodeKey;
+            this.vcImgSrc = this.initVcImgSrc;
+            // this.requestGetVerifyCode();
             //画验证码
-            this.changeVerifCode();
+            // this.changeverifyCode();
         },
         methods: {
             //点击改变验证码
-            changeVerifCode() {
-                //画验证码
-                this.curVerifCode = drawPic(this.$refs['verifCodeCanvas']);
+            // changeverifyCode() {
+            //     //画验证码
+            //     this.curverifyCode = drawPic(this.$refs['verifyCodeCanvas']);
+            // },
+            //点击验证码图片
+            onVcImgClick() {
+                this.vcImgSrc=this.initVcImgSrc+'&time='+new Date().getTime()
             },
             //参数校验
             validateParam() {
-                if (this.loginForm.verifCode !== this.curVerifCode) {
-                    this.$message.error('验证码错误');
-                    this.changeVerifCode();
-                    return false;
-                }
+                // if (this.loginForm.verifyCode !== this.curverifyCode) {
+                //     this.$message.error('验证码错误');
+                //     this.changeverifyCode();
+                //     return false;
+                // }
                 return true;
             },
             //表单提交
@@ -129,7 +143,7 @@
                     background: 'rgba(0, 0, 0, 0.7)'
                 });
                 this.$api.Login.login(this.loginForm).then((res) => {
-                    this.log.debug(res.data)
+                    window.console.debug(res.data)
                     if (res.code === 0) {
                         // let seconds = 10;
                         // let minute = 60*;
@@ -141,19 +155,21 @@
                         localStorage.setItem(KeyName.USER, JSON.stringify(res.data.user));// 保存用户到本地会话
                         this.$store.commit('menuRouteLoaded', false) // 要求重新加载导航菜单
                         this.$router.replace('/').catch(err => {err})  // 登录成功，跳转到主页
+                    }else{
+                        this.onVcImgClick();
                     }
                     // this.loading = false
                 });
-                // this.changeVerifCode();
+                // this.changeverifyCode();
                 loading.close();
             },
-            deepClone (obj) {
-                let newObj = obj instanceof Array ? [] : {};
-                for (let i in obj) {
-                    newObj[i] = typeof obj[i] === 'object' ? this.deepClone(obj[i]) : obj[i]
-                }
-                return newObj
-            }
+            // deepClone (obj) {
+            //     let newObj = obj instanceof Array ? [] : {};
+            //     for (let i in obj) {
+            //         newObj[i] = typeof obj[i] === 'object' ? this.deepClone(obj[i]) : obj[i]
+            //     }
+            //     return newObj
+            // }
         },
         computed:{
             ...mapState({
@@ -191,6 +207,12 @@
         .el-form{
             /*padding-right: 50px;*/
             padding: 0 50px;
+            .vcImg{
+                width: 90px;
+                height: 40px;
+                vertical-align:middle;
+                cursor:pointer;
+            }
 
         }
         .logo{

@@ -80,7 +80,7 @@
             },
             // index: 选中菜单项的 index, indexPath: 选中菜单项的 index path
             selectMenu(index, indexPath) {
-                this.log.debug('index:'+index+',indexPath:'+indexPath);
+                window.console.log('index:'+index+',indexPath:'+indexPath);
 
                 let hasMenu = this.tabsData.find( item=> item.name==index);
                 if (hasMenu){

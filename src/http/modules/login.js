@@ -1,7 +1,11 @@
 import axios from '../axios'
+import { baseUrl } from '@/config/config'
 /*
 * 系统登录模块
 */
+
+// 获取验证码
+export const getVerifyCodeUrl = baseUrl+'sysUser/getVerifyCode';
 
 // 登录
 export const login = data => {

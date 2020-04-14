@@ -1,4 +1,3 @@
-import log from '@/utils/log'
 export default {
     /*
     * 状态对象
@@ -34,7 +33,7 @@ export default {
     mutations:{
         addTab(state,item){  // 添加tab
             state.tabsData.push(item)
-            log.debug('添加新的tab：'+JSON.stringify(state.tabsData));
+            window.console.log('添加新的tab：',JSON.stringify(state.tabsData))
 
             // let newTabName = ++this.tabIndex + '';
             // this.editableTabs.push({

@@ -22,35 +22,35 @@ export default {
 </script>
 
 <style lang="scss">
-/*<style lang="less">*/
-.minScrollbar::-webkit-scrollbar{
-    width: 2px;
-    height: 2px;
-    /*background: rgba(00,00,00,0.8);*/
-}
-body::-webkit-scrollbar,.scrollbar::-webkit-scrollbar{
-    width: 6px;
-    height: 6px;
-    /*background: rgba(00,00,00,0.8);*/
-}
-body::-webkit-scrollbar-track,.scrollbar::-webkit-scrollbar-track,.minScrollbar::-webkit-scrollbar-track{
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-    border-radius: 8px;
-    /*background: rgba(00,00,00,0.8);*/
-    background: rgba(255,255,255,0.9);
-}
-body::-webkit-scrollbar-thumb,.scrollbar::-webkit-scrollbar-thumb,.minScrollbar::-webkit-scrollbar-thumb{
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-    border-radius: 8px;
-    background: #CDCDCD;
-} /* 滑块颜色 */
+    /*<style lang="less">*/
+    .minScrollbar::-webkit-scrollbar{
+        width: 2px;
+        height: 2px;
+        /*background: rgba(00,00,00,0.8);*/
+    }
+    body::-webkit-scrollbar,.scrollbar::-webkit-scrollbar{
+        width: 6px;
+        height: 6px;
+        /*background: rgba(00,00,00,0.8);*/
+    }
+    body::-webkit-scrollbar-track,.scrollbar::-webkit-scrollbar-track,.minScrollbar::-webkit-scrollbar-track{
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        border-radius: 8px;
+        /*background: rgba(00,00,00,0.8);*/
+        background: rgba(255,255,255,0.9);
+    }
+    body::-webkit-scrollbar-thumb,.scrollbar::-webkit-scrollbar-thumb,.minScrollbar::-webkit-scrollbar-thumb{
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        border-radius: 8px;
+        background: #CDCDCD;
+    } /* 滑块颜色 */
 
-/*颜色相关*/
-$themeColor: #19A97B;
-$SuccessColor: #67C23A;
-$WarningColor: #E6A23C;
-$DangerColor: #F56C6C;
-$InfoColor: #909399;
+    /*颜色相关*/
+    $themeColor: #19A97B;
+    $SuccessColor: #67C23A;
+    $WarningColor: #E6A23C;
+    $DangerColor: #F56C6C;
+    $InfoColor: #909399;
 
 
 
@@ -69,7 +69,7 @@ $InfoColor: #909399;
             height: 100vh;
             overflow-y: hidden;
             /*  修改el-menu的默认样式*/
-            /deep/ .el-menu--collapse{
+             .el-menu--collapse{
                 >span{
                     >.el-menu-item,>.el-submenu{
                         span{visibility: hidden;}
@@ -77,23 +77,23 @@ $InfoColor: #909399;
                     }
                 }
             }
-            /deep/ .el-menu-item, .el-submenu__title{height: 40px;line-height:40px; }
+             .el-menu-item, .el-submenu__title{height: 40px;line-height:40px; }
             /*  修改tab的默认样式*/
-            /deep/ .el-tabs{height: 100%;display: flex; flex-direction: column;}
-            /deep/ .el-tabs__header {background-color: #FFFFFF;
+             .el-tabs{height: 100%;display: flex; flex-direction: column;}
+             .el-tabs__header {background-color: #FFFFFF;
                 .el-tabs__nav {border: none;}
             }
 
-            /deep/ .el-tabs__item{color: rgba(0,0,0,.65);margin: 0 10px; border-left: none;
+             .el-tabs__item{color: rgba(0,0,0,.65);margin: 0 10px; border-left: none;
                 &.is-active{color: $themeColor;border-bottom-color: $themeColor}
             }
 
 
-            /deep/ .loginForm .el-form-item__content{
+             .loginForm .el-form-item__content{
                 margin-left: 0 !important;
             }
 
-            /deep/ .el-tree-node.is-current>.el-tree-node__content {
+             .el-tree-node.is-current>.el-tree-node__content {
                 color: $themeColor;
             }
         }
@@ -169,7 +169,7 @@ $InfoColor: #909399;
             min-height: 600px;
         }
 
-        /deep/ .el-tabs__content{ @extend .bgc-f0f2f5;flex: 1;@extend .scrollbar;overflow-y: scroll;
+         .el-tabs__content{ @extend .bgc-f0f2f5;flex: 1;@extend .scrollbar;overflow-y: scroll;
             .el-tab-pane{
                 @extend .bgc-f0f2f5;
             }
