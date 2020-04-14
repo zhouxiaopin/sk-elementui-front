@@ -168,7 +168,6 @@ export default {
             margin: 15px 15px 0 15px;
             min-height: 600px;
         }
-
          .el-tabs__content{ @extend .bgc-f0f2f5;flex: 1;@extend .scrollbar;overflow-y: scroll;
             .el-tab-pane{
                 @extend .bgc-f0f2f5;
