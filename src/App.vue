@@ -174,7 +174,6 @@ export default {
                 @extend .bgc-f0f2f5;
             }
         }
-
         /*表格表头和内容文字居中*/
         /*.el-table td, .el-table th {*/
         /*    text-align: center;*/
