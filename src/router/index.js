@@ -20,6 +20,7 @@ import api from '@/http/api'
 Vue.use(Router);
 
 const router = new Router({
+    mode: 'history', // 去掉url中的#
     routes:[
         {
             path:'/',
@@ -35,9 +36,9 @@ const router = new Router({
                         // name:'Home',
                         // component:Home,
                         components:{Home},
-                        // meta:{
-                        //     title: 'SK后台管理系统'
-                        // }
+                        meta:{
+                            title: 'SK后台管理系统'
+                        }
                     }
             ]
             // children: [

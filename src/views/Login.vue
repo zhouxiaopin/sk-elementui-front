@@ -28,12 +28,12 @@
 </template>
 
 <script>
-    /*eslint-disable*/
     import { mapState } from 'vuex'
     // import {drawPic} from '@/utils/verifyCode'
     import {uuid} from '@/utils/uuid'
     import {KeyName} from '@/config/config'
     import Cookies from "js-cookie";
+
     export default {
         name: "Login",
         data() {
@@ -88,6 +88,7 @@
         create:function(){
         },
         mounted: function () {
+            // window.console.log(Date.now())
             if (this.sysMenu){
                 window.location.reload();
             }

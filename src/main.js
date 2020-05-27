@@ -7,7 +7,8 @@ import ElementUI from 'element-ui'
 //SkUI
 import '@/components/sys'
 import 'element-ui/lib/theme-chalk/index.css'
-import 'normalize.css' //统一浏览器的初始样式
+// import 'normalize.css' //统一浏览器的初始样式
+import 'normalize.css/normalize.css'//统一浏览器的初始样式
 import 'font-awesome/css/font-awesome.min.css'
 import '@/assets/iconfont/iconfont.css'
 
