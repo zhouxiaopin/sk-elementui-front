@@ -325,6 +325,7 @@ function addDynamicRoutes (menuList = [], routes = []) {
         // const HelloWorld = ()=> import(/* webpackChunkName: "group-foo" */ `@/components/${a}`);
         // const HelloWorld = resolve => require([@/${path}.vue], resolve);
         // route['component'] = component;
+        //路由懒加载写法---AMD
         route.components[item.routeName] = resolve => require([`@/views${item.routePath}`], resolve);
         routes.push(route);
 
